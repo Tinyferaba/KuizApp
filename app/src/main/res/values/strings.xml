@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Kuiz</string>
+    <string name="txtCorrect">Correct</string>
+    <string name="txtProgress">Progress</string>
+    <string name="txtCategory">Category</string>
+    <string name="txtDescription">Description</string>
+    <string name="demopercent">70%</string>
+    <string name="txtKuizApp">KuizApp</string>
+    <string name="txtRetailCreditRisk">Retail Credit Risk</string>
+    <string name="version">VERSION 1.0.0</string>
+    <string name="demoNumber">23</string>
+    <string name="tvQuestion">Question</string>
+    <string name="txtChoice">Choice</string>
+    <string name="demoQuestion">Which of these is not a lending product offered by BSP?</string>
+</resources>

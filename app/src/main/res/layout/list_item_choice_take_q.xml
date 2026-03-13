@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_rect_r5_choice"
+    android:backgroundTint="@color/white"
+    android:padding="8dp"
+    android:layout_marginBottom="20dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvChoice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center"
+        android:maxLines="3"
+        android:text="Option"
+        android:textColor="@color/green_darker"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivChoiceIndicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/bg_rnd"
+        android:backgroundTint="@color/green_dark"
+        android:src="@drawable/ic_check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvChoiceDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textColor="@color/greenish_grey_dark"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvChoice"
+        app:layout_constraintStart_toStartOf="@+id/tvChoice"
+        app:layout_constraintTop_toBottomOf="@+id/tvChoice" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
