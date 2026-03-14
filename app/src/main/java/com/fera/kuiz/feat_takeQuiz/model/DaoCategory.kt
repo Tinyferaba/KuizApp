@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
+import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
 
 @Dao
 interface DaoCategory : InterfaceCategory {
@@ -33,4 +34,38 @@ interface DaoCategory : InterfaceCategory {
                         order by qStartTakenDate desc limit 10
             """)
     override suspend fun getRecentCategories(): List<TblCategory>
+
+    @Query(
+        """
+            select 
+                c.pkCategoryId,
+                c.iconFilePath,
+                c.noteFilePath,
+                c.totalQuestions,
+                c.lastQuestionTakenId,
+                c.lastQuestionTakenNo,
+                
+                q.pkQuestionId,
+                q.questionNo,
+                q.questionType,
+                q.question,
+                q.difficulty,
+                q.dateAdded,
+                q.dataStatus,
+                
+                a.pkAnswerId,
+                a.answer,
+                
+                ua.pkUserAnswerId,
+                ua.answerUser,
+                ua.isCorrect,
+                ua.qStartTakenDate
+            from tblCategory c 
+                left join tblquestion q on c.pkCategoryId = q.fkQuestion_categoryId
+                left join tblanswer a on q.pkQuestionId = a.fkAnswer_questionId
+                left join tbluseranswer ua on q.pkQuestionId = ua.fkUserAnswer_questionId
+            where q.pkQuestionId = :pkLastQuestionTakenQuestionId
+        """
+    )
+    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId: Long): HolderQuesAnsAndUserAns
 }

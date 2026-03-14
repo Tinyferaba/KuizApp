@@ -17,13 +17,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
+import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.databinding.ActivityMainBinding
+import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
 import com.fera.kuiz.feat_Questions.view.AddQuestionActivity
+import com.fera.kuiz.feat_Questions.view.CategoryActivity
 import com.fera.kuiz.feat_main.controller.MainController
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), AdapterRecentCat.AdapterRecentCatActions {
+class MainActivity : AppCompatActivity(), AdapterCategoryActions {
 
     //########## CONST & DEFAULT VAL #############//
     private lateinit var b: ActivityMainBinding
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity(), AdapterRecentCat.AdapterRecentCatActio
     private lateinit var adapterRecentCat: AdapterRecentCat
     private var listRecentCat = emptyList<TblCategory>()
 
+    private lateinit var adapterCategory: AdapterCategory
+    private var listCategory = emptyList<TblCategory>()
 
     private lateinit var mainController: MainController
 
@@ -75,18 +80,36 @@ class MainActivity : AppCompatActivity(), AdapterRecentCat.AdapterRecentCatActio
             }
         }
 
+        adapterCategory = AdapterCategory(listCategory, this, this)
+        b.rvCategory.layoutManager = LinearLayoutManager(this)
+        b.rvCategory.adapter = adapterCategory
+
+        lifecycleScope.launch {
+            mainController.getCategories().let {
+                listCategory = it
+                adapterCategory.updateList(listCategory)
+            }
+        }
     }
 
     private fun addActionListeners(){
-        b.ivToggleNavView.setOnClickListener {
+        b.ivToggleNavViewMain.setOnClickListener {
             showHideSideDrawer()
         }
 
-        b.ivAddCategory.setOnClickListener {
+        b.ivToggleNavViewMain.setOnClickListener {
             val intent = Intent(this, AddQuestionActivity::class.java)
             intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
             startActivity(intent)
         }
+
+//        b.ivAddCategoryMain.setOnClickListener {
+//            toastLong("Unable to add Categories now")
+//
+//            val intent = Intent(this, CategoryActivity::class.java)
+//            intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+//            startActivity(intent)
+//        }
     }
 
 
@@ -117,6 +140,10 @@ class MainActivity : AppCompatActivity(), AdapterRecentCat.AdapterRecentCatActio
     private fun setNavigationBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
             window.navigationBarColor = getColor(R.color.transparent)
+    }
+
+    override suspend fun getQuestion(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
+        return mainController.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
     }
 
 }

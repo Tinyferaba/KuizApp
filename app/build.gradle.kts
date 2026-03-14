@@ -76,4 +76,6 @@ dependencies {
     implementation("net.zetetic:android-database-sqlcipher:4.5.0")
     implementation("androidx.sqlite:sqlite:2.2.0")
 
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 }

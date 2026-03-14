@@ -14,12 +14,14 @@ data class TblCategory(
     val title: String?,
     val description: String?,
     val note: String?,
-    val filePath: String?,
+    val iconFilePath: String?,
+    val noteFilePath: String?,
     val totalQuestions: Int,
     val totalCorrectAnswers: Int,
     val totalWrongAnswers: Int,
     val totalQAnswered: Int,
-    val lastQuestionTaken_questionId: Long,
+    val lastQuestionTakenId: Long,
+    val lastQuestionTakenNo: Int,
     val qStartTakenDate: Long,
     val dataStatus: Int
 ) : Parcelable {
@@ -29,12 +31,14 @@ data class TblCategory(
         title = null,
         description = null,
         note = null,
-        filePath = null,
+        iconFilePath = null,
+        noteFilePath = null,
         totalQuestions = 0,
         totalCorrectAnswers = 0,
         totalWrongAnswers = 0,
         totalQAnswered = 0,
-        lastQuestionTaken_questionId = 0,
+        lastQuestionTakenId = 0L,
+        lastQuestionTakenNo = 0,
         qStartTakenDate = 0,
         dataStatus = EnumDataInfo.NONE.info
     )
@@ -45,11 +49,13 @@ data class TblCategory(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readLong(),
+        parcel.readInt(),
         parcel.readLong(),
         parcel.readInt()
     )
@@ -73,11 +79,13 @@ data class TblCategory(
         parcelDest.writeString(title)
         parcelDest.writeString(description)
         parcelDest.writeString(note)
-        parcelDest.writeString(filePath)
+        parcelDest.writeString(iconFilePath)
+        parcelDest.writeString(noteFilePath)
         parcelDest.writeInt(totalQuestions)
         parcelDest.writeInt(totalWrongAnswers)
         parcelDest.writeInt(totalQAnswered)
-        parcelDest.writeLong(lastQuestionTaken_questionId)
+        parcelDest.writeLong(lastQuestionTakenId)
+        parcelDest.writeInt(lastQuestionTakenNo)
         parcelDest.writeLong(qStartTakenDate)
         parcelDest.writeInt(dataStatus)
     }

@@ -36,6 +36,7 @@ data class TblUserAnswer(
     val pkUserAnswerId: Long,
     val fkUserAnswer_questionId: Long,
     val fkUserAnswer_userRegistrationId: Long,
+    val answerUser: String,
     val isCorrect: Boolean,
     val qStartTakenDate: Long
 )

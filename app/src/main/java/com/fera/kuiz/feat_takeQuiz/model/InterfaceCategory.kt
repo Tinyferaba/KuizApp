@@ -1,5 +1,7 @@
 package com.fera.kuiz.feat_takeQuiz.model
 
+import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
+
 interface InterfaceCategory {
     suspend fun insertCategory(tblCategory: TblCategory): Long
 
@@ -14,4 +16,6 @@ interface InterfaceCategory {
     suspend fun getCategories(): List<TblCategory>
 
     suspend fun getRecentCategories(): List<TblCategory>
+
+    suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId: Long): HolderQuesAnsAndUserAns
 }
