@@ -8,7 +8,7 @@
     android:layout_height="46dp">
 
     <TextView
-        android:id="@+id/tvQuestionNo"
+        android:id="@+id/tvQuestionNoLiCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tvQuestionLiCat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -30,14 +30,14 @@
         android:text="@string/tvQuestion"
         android:textColor="@color/white"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="@+id/tvQuestionNo"
-        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintBottom_toBottomOf="@+id/tvQuestionNoLiCat"
+        app:layout_constraintEnd_toStartOf="@+id/ivQuestionTypeLiCat"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tvQuestionNo"
-        app:layout_constraintTop_toTopOf="@+id/tvQuestionNo" />
+        app:layout_constraintStart_toEndOf="@+id/tvQuestionNoLiCat"
+        app:layout_constraintTop_toTopOf="@+id/tvQuestionNoLiCat" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/ivQuestionTypeLiCat"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"

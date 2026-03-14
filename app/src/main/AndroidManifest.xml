@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kuiz" >
         <activity
-            android:name=".feat_Questions.view.CategoryActivity"
+            android:name=".feat_CategoryQuestions.view.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".feat_Questions.view.AddQuestionActivity"
+            android:name=".feat_CategoryQuestions.view.AddQuestionActivity"
             android:exported="false" />
         <activity
             android:name=".feat_takeQuiz.view.TakeQuizActivity"

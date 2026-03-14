@@ -1,6 +1,6 @@
 package com.fera.kuiz.feat_takeQuiz.model
 
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 
 interface InterfaceCategory {
     suspend fun insertCategory(tblCategory: TblCategory): Long

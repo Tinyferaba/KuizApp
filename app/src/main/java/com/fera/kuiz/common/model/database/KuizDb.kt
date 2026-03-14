@@ -7,9 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.common.util.Converters
-import com.fera.kuiz.feat_Questions.model.answer.TblAnswer
-import com.fera.kuiz.feat_Questions.model.question.TblQuestion
-import com.fera.kuiz.feat_Questions.model.userAnswer.TblUserAnswer
+import com.fera.kuiz.feat_CategoryQuestions.model.answer.TblAnswer
+import com.fera.kuiz.feat_CategoryQuestions.model.question.DaoQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.TblUserAnswer
 import com.fera.kuiz.feat_takeQuiz.model.DaoCategory
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import com.fera.kuiz.feat_userAuth.model.TblUserRegistration
@@ -27,6 +28,7 @@ import net.sqlcipher.database.SupportFactory
 abstract class KuizDb: RoomDatabase() {
 
     abstract fun daoCategory(): DaoCategory
+    abstract fun daoQuestion(): DaoQuestion
 
 
 

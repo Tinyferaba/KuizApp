@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_Questions.view
+package com.fera.kuiz.feat_CategoryQuestions.view
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

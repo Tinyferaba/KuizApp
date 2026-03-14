@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_Questions.model.userAnswer
+package com.fera.kuiz.feat_CategoryQuestions.model.userAnswer
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -7,7 +7,7 @@ import androidx.room.ForeignKey.Companion.NO_ACTION
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.fera.kuiz.common.util.DatabaseProperties
-import com.fera.kuiz.feat_Questions.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_userAuth.model.TblUserRegistration
 
 @Entity(tableName = DatabaseProperties.TBL_USER_ANSWER,

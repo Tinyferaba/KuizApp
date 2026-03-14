@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_Questions.model.answer
+package com.fera.kuiz.feat_CategoryQuestions.model.answer
 
 interface InterfaceAnswer {
     suspend fun insertAnswer(tblAnswer: TblAnswer): Long

@@ -3,7 +3,7 @@ package com.fera.kuiz.feat_main.controller
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.fera.kuiz.common.model.database.KuizDb
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 import com.fera.kuiz.feat_takeQuiz.model.InterfaceCategory
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 

@@ -17,16 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
-import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.databinding.ActivityMainBinding
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
-import com.fera.kuiz.feat_Questions.view.AddQuestionActivity
-import com.fera.kuiz.feat_Questions.view.CategoryActivity
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
 import com.fera.kuiz.feat_main.controller.MainController
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), AdapterCategoryActions {
+class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
 
     //########## CONST & DEFAULT VAL #############//
     private lateinit var b: ActivityMainBinding
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity(), AdapterCategoryActions {
     private lateinit var adapterRecentCat: AdapterRecentCat
     private var listRecentCat = emptyList<TblCategory>()
 
-    private lateinit var adapterCategory: AdapterCategory
+    private lateinit var adapterCategoryMain: AdapterCategoryMain
     private var listCategory = emptyList<TblCategory>()
 
     private lateinit var mainController: MainController
@@ -80,14 +78,14 @@ class MainActivity : AppCompatActivity(), AdapterCategoryActions {
             }
         }
 
-        adapterCategory = AdapterCategory(listCategory, this, this)
+        adapterCategoryMain = AdapterCategoryMain(listCategory, this, this)
         b.rvCategory.layoutManager = LinearLayoutManager(this)
-        b.rvCategory.adapter = adapterCategory
+        b.rvCategory.adapter = adapterCategoryMain
 
         lifecycleScope.launch {
             mainController.getCategories().let {
                 listCategory = it
-                adapterCategory.updateList(listCategory)
+                adapterCategoryMain.updateList(listCategory)
             }
         }
     }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feat_Questions.view.AddQuestionActivity">
+    tools:context=".feat_CategoryQuestions.view.AddQuestionActivity">
 
     <ImageView
         android:id="@+id/imageView8"

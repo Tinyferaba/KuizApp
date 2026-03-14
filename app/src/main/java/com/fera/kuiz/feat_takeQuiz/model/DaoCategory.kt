@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 
 @Dao
 interface DaoCategory : InterfaceCategory {

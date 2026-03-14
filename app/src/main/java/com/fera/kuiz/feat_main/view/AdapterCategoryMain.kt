@@ -7,21 +7,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fera.kuiz.BuildConfig
-import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ListItemCategoryBinding
-import com.fera.kuiz.databinding.ListItemRecentCatBinding
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
-import com.fera.kuiz.feat_Questions.view.AddQuestionActivity
+import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
-import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AdapterCategory(private var listCategory: List<TblCategory>, private val context: Context, private val actions: AdapterCategoryActions): RecyclerView.Adapter<AdapterCategory.MyViewHolder>() {
+class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterCategory): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,7 +32,7 @@ class AdapterCategory(private var listCategory: List<TblCategory>, private val c
             tblCategory.iconFilePath?.let {
                 Glide.with(context)
                     .load(it)
-                    .into(sivCatIcon)
+                    .into(sivCategoryIconLiMain)
             }
 
             tvCategoryLiMain.text = tblCategory.title
@@ -45,7 +41,7 @@ class AdapterCategory(private var listCategory: List<TblCategory>, private val c
             cpbCatProgressLiMain.max = tblCategory.totalQuestions
             cpbCatProgressLiMain.progress = tblCategory.totalQAnswered
 
-            sivCatIcon.setOnClickListener {
+            sivCategoryIconLiMain.setOnClickListener {
                 val intent = Intent(context, AddQuestionActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 context.startActivity(intent)
@@ -73,6 +69,7 @@ class AdapterCategory(private var listCategory: List<TblCategory>, private val c
 
     fun updateList(list: List<TblCategory>){
         listCategory = list
+        notifyDataSetChanged()
     }
 
 

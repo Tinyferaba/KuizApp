@@ -1,7 +1,7 @@
 package com.fera.kuiz.feat_main.view
 
-import com.fera.kuiz.feat_Questions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 
-interface AdapterCategoryActions {
+interface InterfaceAdapterCategory {
     suspend fun getQuestion(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns
 }

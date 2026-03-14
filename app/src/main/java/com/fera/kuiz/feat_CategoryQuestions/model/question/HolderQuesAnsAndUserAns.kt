@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_Questions.model.question
+package com.fera.kuiz.feat_CategoryQuestions.model.question
 
 import android.os.Parcel
 import android.os.Parcelable
