@@ -1,5 +1,6 @@
 package com.fera.kuiz.feat_takeQuiz.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -26,14 +27,14 @@ interface DaoCategory : InterfaceCategory {
     override suspend fun getCategory(pkCategoryId: Long): TblCategory
 
     @Query("select * from tblcategory")
-    override suspend fun getCategories(): List<TblCategory>
+     fun getCategories(): LiveData<List<TblCategory>>
 
     @Query("""
                         select *
                         from  tblCategory
                         order by qStartTakenDate desc limit 10
             """)
-    override suspend fun getRecentCategories(): List<TblCategory>
+     fun getRecentCategories(): LiveData<List<TblCategory>>
 
     @Query(
         """
@@ -64,8 +65,42 @@ interface DaoCategory : InterfaceCategory {
                 left join tblquestion q on c.pkCategoryId = q.fkQuestion_categoryId
                 left join tblanswer a on q.pkQuestionId = a.fkAnswer_questionId
                 left join tbluseranswer ua on q.pkQuestionId = ua.fkUserAnswer_questionId
-            where q.pkQuestionId = :pkLastQuestionTakenQuestionId
+            where q.pkQuestionId = :pkLastQuestionTakenId
         """
     )
-    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId: Long): HolderQuesAnsAndUserAns
+    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns
+
+    @Query("""select 
+                c.pkCategoryId,
+                c.iconFilePath,
+                c.noteFilePath,
+                c.totalQuestions,
+                c.lastQuestionTakenId,
+                c.lastQuestionTakenNo,
+                
+                q.pkQuestionId,
+                q.questionNo,
+                q.questionType,
+                q.question,
+                q.difficulty,
+                q.dateAdded,
+                q.dataStatus,
+                
+                a.pkAnswerId,
+                a.answer,
+                
+                ua.pkUserAnswerId,
+                ua.answerUser,
+                ua.isCorrect,
+                ua.qStartTakenDate
+            from tblCategory c 
+                left join tblquestion q on c.pkCategoryId = q.fkQuestion_categoryId
+                left join tblanswer a on q.pkQuestionId = a.fkAnswer_questionId
+                left join tbluseranswer ua on q.pkQuestionId = ua.fkUserAnswer_questionId
+            where c.pkCategoryId = :pkCategoryId
+                """)
+    override suspend fun getQuestionList(pkCategoryId: Long): List<HolderQuesAnsAndUserAns>
+
+
+
 }

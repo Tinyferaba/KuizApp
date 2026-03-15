@@ -16,4 +16,10 @@ interface DaoAnswer : InterfaceAnswer {
 
     @Query("delete from tblanswer where pkAnswerId = :pkAnswerId")
     override suspend fun deleteAnswer(pkAnswerId: Long)
+
+    @Query("select * from tblAnswer where pkAnswerId = :pkAnswerId")
+    override suspend fun getAnswer(pkAnswerId: Long): TblAnswer
+
+    @Query("select * from tblAnswer where fkAnswer_questionId = :pkQuestionId")
+    override suspend fun getAnswers(pkQuestionId: Long): List<TblAnswer>
 }

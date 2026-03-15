@@ -2,7 +2,10 @@ package com.fera.kuiz.feat_main.controller
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 import com.fera.kuiz.feat_takeQuiz.model.InterfaceCategory
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
@@ -10,6 +13,11 @@ import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 class MainController(application: Application) : AndroidViewModel(application), InterfaceCategory {
 
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
+    private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
+    private val daoAnswer = KuizDb.getDatabase(application).daoAnswer()
+
+    val categories: LiveData<List<TblCategory>> = daoCategory.getCategories()
+    val categoriesRecent: LiveData<List<TblCategory>> = daoCategory.getRecentCategories()
 
     override suspend fun insertCategory(tblCategory: TblCategory): Long {
         return daoCategory.insertCategory(tblCategory)
@@ -31,16 +39,29 @@ class MainController(application: Application) : AndroidViewModel(application), 
         return daoCategory.getCategory(pkCategoryId)
     }
 
-    override suspend fun getCategories(): List<TblCategory> {
-        return daoCategory.getCategories()
+    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
+        return daoCategory.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
     }
 
-    override suspend fun getRecentCategories(): List<TblCategory> {
-        return daoCategory.getRecentCategories()
+    override suspend fun getQuestionList(pkCategoryId: Long): List<HolderQuesAnsAndUserAns> {
+        return daoCategory.getQuestionList(pkCategoryId)
     }
 
-    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId: Long): HolderQuesAnsAndUserAns {
-        return daoCategory.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId)
+    suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): ArrayList<HolderCatQuestAndAns>{
+        val listHolderQuesAnsAndUserAns = arrayListOf<HolderCatQuestAndAns>()
+        val listHolderQuestAndAns = arrayListOf<HolderQuestAndAns>()
+
+        val tblCategory = daoCategory.getCategory(pkCategoryId)
+        val listQuestions = daoQuestion.getQuestions(pkCategoryId)
+
+        listQuestions.forEach { tblQuestion ->
+            val listAnswers = daoAnswer.getAnswers(tblQuestion.pkQuestionId)
+            listHolderQuestAndAns.add(HolderQuestAndAns(tblQuestion, ArrayList(listAnswers)))
+        }
+
+        listHolderQuesAnsAndUserAns.add(HolderCatQuestAndAns(tblCategory, listHolderQuestAndAns))
+
+        return listHolderQuesAnsAndUserAns
     }
 
 }

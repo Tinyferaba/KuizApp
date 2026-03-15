@@ -1,5 +1,6 @@
 package com.fera.kuiz.feat_CategoryQuestions.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
@@ -18,6 +20,8 @@ import com.fera.kuiz.databinding.ActivityCategoryBinding
 import com.fera.kuiz.feat_CategoryQuestions.controller.CategoryController
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
 
 class CategoryActivity : AppCompatActivity() {
@@ -26,9 +30,10 @@ class CategoryActivity : AppCompatActivity() {
     private var tblCategory: TblCategory ?= null
 
     private lateinit var adapterQuestion: AdapterQuestion
+    private var listQuestion = emptyList<TblQuestion>()
+
 
     private lateinit var categoryController: CategoryController
-    private var listQuestion = emptyList<TblQuestion>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -58,6 +63,12 @@ class CategoryActivity : AppCompatActivity() {
         b.ivbackCat.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        b.ivTakeQuizCat.setOnClickListener {
+            val intent = Intent(this, TakeQuizActivity::class.java)
+            intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+            // TODO: load Questions (Parcelable) and pass in as extra
+            startActivity(intent)
+        }
     }
 
     private fun initView() {
@@ -67,17 +78,25 @@ class CategoryActivity : AppCompatActivity() {
         b.rvQuestionsCat.layoutManager = LinearLayoutManager(this)
         b.rvQuestionsCat.adapter = adapterQuestion
 
-
+        loadProperty()
     }
 
     private fun loadProperty(){
         tblCategory = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
         tblCategory?.let {
+            b.edtTitleCat.setText(it.title)
+
             b.pbCorrectCat.max = it.totalQAnswered
             b.pbCorrectCat.progress = it.totalCorrectAnswers
 
             b.pbProgressCat.max = it.totalQuestions
             b.pbProgressCat.progress = it.totalQAnswered
+
+            it.iconFilePath?.let {
+                Glide.with(this)
+                    .load(it)
+                    .into(b.sivCategoryIconCat)
+            }
 
             lifecycleScope.launch {
                 categoryController.getQuestions(it.pkCategoryId).let { list ->

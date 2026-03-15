@@ -27,6 +27,7 @@
         android:background="@drawable/bg_rnd"
         android:padding="2dp"
         android:scaleType="centerCrop"
+        android:elevation="7dp"
         android:src="@drawable/ic_logo"
         android:tint="@color/green_darkest"
         app:contentPadding="20dp"
@@ -44,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:src="@drawable/ic_edit"
+        android:elevation="7dp"
         android:background="@drawable/bg_rnd"
         app:backgroundTint="@color/greenish_grey"
         android:padding="4dp"
@@ -120,7 +122,7 @@
 
 
     <EditText
-        android:id="@+id/tvTitleCat"
+        android:id="@+id/edtTitleCat"
         android:background="@color/transparent"
         android:inputType="none"
         android:layout_width="0dp"
@@ -158,20 +160,40 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
         android:id="@+id/rvQuestionsCat"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        tools:listitem="@layout/list_item_question"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sivCategoryIconCat" />
+        app:layout_constraintTop_toBottomOf="@+id/sivCategoryIconCat"
+        tools:listitem="@layout/list_item_question" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txtTakeQuiz"
+        android:textColor="@color/green_darker"
+        android:textSize="13sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/ivTakeQuizCat"
+        app:layout_constraintEnd_toStartOf="@+id/ivTakeQuizCat"
+        app:layout_constraintTop_toTopOf="@+id/ivTakeQuizCat" />
 
-<!--    <ImageView-->
+    <ImageView
+        android:id="@+id/ivTakeQuizCat"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_play"
+        android:tint="@color/green_darkest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+    <!--    <ImageView-->
 <!--        android:id="@+id/ivAddQuestionCat"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->

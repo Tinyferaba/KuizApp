@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.common.util.Converters
+import com.fera.kuiz.feat_CategoryQuestions.model.answer.DaoAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.answer.TblAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.question.DaoQuestion
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
@@ -29,6 +30,7 @@ abstract class KuizDb: RoomDatabase() {
 
     abstract fun daoCategory(): DaoCategory
     abstract fun daoQuestion(): DaoQuestion
+    abstract fun daoAnswer(): DaoAnswer
 
 
 
@@ -41,7 +43,7 @@ abstract class KuizDb: RoomDatabase() {
             if (tempINSTANCE != null)
                 return tempINSTANCE
 
-            val password = BuildConfig.SQLITE_PASSWORD
+            val password = BuildConfig.PASSWORD_SQLITE_DB
             val bytePassword: ByteArray = SQLiteDatabase.getBytes(password.toCharArray())
             val factory = SupportFactory(bytePassword)
 
@@ -51,7 +53,7 @@ abstract class KuizDb: RoomDatabase() {
                     KuizDb::class.java,
                     "kuiz_db.db")
                     .openHelperFactory(factory)
-//                    .createFromAsset("database/kuiz_db.db")
+                    .createFromAsset("database/kuiz_db.db")
                     .build()
 
 //                deletePreloadedDatabase(context)

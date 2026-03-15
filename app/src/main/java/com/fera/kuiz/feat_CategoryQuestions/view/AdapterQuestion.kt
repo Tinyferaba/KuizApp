@@ -43,7 +43,8 @@ class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val c
             root.setOnClickListener {
                 val intent = Intent(context, TakeQuizActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-
+                // TODO: Make Questions Parcelable and pass in as extra
+                context.startActivity(intent)
             }
         }
     }

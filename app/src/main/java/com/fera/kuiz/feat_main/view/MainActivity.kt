@@ -3,6 +3,7 @@ package com.fera.kuiz.feat_main.view
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,20 +12,26 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ActivityMainBinding
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
 import com.fera.kuiz.feat_main.controller.MainController
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
+    private val TAG = "MainActivity"
 
     //########## CONST & DEFAULT VAL #############//
     private lateinit var b: ActivityMainBinding
@@ -55,42 +62,41 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
             insets
         }
 
+
         setStatusBarColor()
         setNavigationBarColor()
 
 
         initViews()
         addActionListeners()
+//        loadData(mainController, this)
 
     }
 
-    private fun initViews(){
+    private fun initViews() {
         mainController = ViewModelProvider(this)[MainController::class.java]
 
         adapterRecentCat = AdapterRecentCat(listRecentCat, this, this)
         b.rvRecentCat.layoutManager = LinearLayoutManager(this)
         b.rvRecentCat.adapter = adapterRecentCat
 
-        lifecycleScope.launch {
-            mainController.getRecentCategories().let {
-                listRecentCat = it
-                adapterRecentCat.updateList(listRecentCat)
-            }
+        mainController.categoriesRecent.observe(this@MainActivity) {
+            adapterRecentCat.updateList(it)
+            listRecentCat = it
         }
 
         adapterCategoryMain = AdapterCategoryMain(listCategory, this, this)
         b.rvCategory.layoutManager = LinearLayoutManager(this)
         b.rvCategory.adapter = adapterCategoryMain
 
-        lifecycleScope.launch {
-            mainController.getCategories().let {
-                listCategory = it
-                adapterCategoryMain.updateList(listCategory)
-            }
+        mainController.categories.observe(this@MainActivity) { it ->
+            adapterCategoryMain.updateList(it)
+            listCategory = it
         }
+
     }
 
-    private fun addActionListeners(){
+    private fun addActionListeners() {
         b.ivToggleNavViewMain.setOnClickListener {
             showHideSideDrawer()
         }
@@ -119,7 +125,6 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
     }
 
 
-
     private fun setStatusBarColor() {
         /*  ######### Description #########
             Setting status bar color
@@ -131,7 +136,8 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
         window.statusBarColor = ContextCompat.getColor(this, R.color.green_darkest)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val decorView = window.decorView
-            decorView.systemUiVisibility = decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            decorView.systemUiVisibility =
+                decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         }
     }
 
@@ -142,6 +148,38 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
 
     override suspend fun getQuestion(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
         return mainController.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
+    }
+
+    override suspend fun getQuestionInCategory(pkCategoryId: Long): List<HolderQuesAnsAndUserAns> {
+        return mainController.getQuestionList(pkCategoryId)
+    }
+
+    override fun gotoAddQuestionActivity() {
+        val intent = Intent(this, AddQuestionActivity::class.java)
+        intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+        startActivity(intent)
+    }
+
+    override fun gotoTakeQuizActivity(pkCategoryId: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val holder = getQuestionInCategory(pkCategoryId)
+            val h2 = getHolderCatQuestAndAns(pkCategoryId)
+
+            Log.d(TAG, "gotoTakeQuizActivity: $holder")
+            Log.d(TAG, "gotoTakeQuizActivity: $h2")
+
+            withContext(Dispatchers.Main){
+                val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
+                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+                intent.putParcelableArrayListExtra(Const.QuestionAnswerAndUserAnswer, ArrayList(holder))
+                startActivity(intent)
+            }
+        }
+    }
+
+
+    override suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): ArrayList<HolderCatQuestAndAns> {
+        return mainController.getHolderCatQuestAndAns(pkCategoryId)
     }
 
 }

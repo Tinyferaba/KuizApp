@@ -1,5 +1,6 @@
 package com.fera.kuiz.feat_takeQuiz.model
 
+import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 
 interface InterfaceCategory {
@@ -13,9 +14,8 @@ interface InterfaceCategory {
 
     suspend fun getCategory(pkCategoryId: Long): TblCategory
 
-    suspend fun getCategories(): List<TblCategory>
+    suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns
 
-    suspend fun getRecentCategories(): List<TblCategory>
+    suspend fun getQuestionList(pkCategoryId: Long): List<HolderQuesAnsAndUserAns>
 
-    suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenQuestionId: Long): HolderQuesAnsAndUserAns
 }

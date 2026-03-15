@@ -6,4 +6,8 @@ interface InterfaceAnswer {
     suspend fun updateAnswer(tblAnswer: TblAnswer)
 
     suspend fun deleteAnswer(pkAnswerId: Long)
+
+    suspend fun getAnswer(pkAnswerId: Long): TblAnswer
+
+    suspend fun getAnswers(pkQuestionId: Long): List<TblAnswer>
 }

@@ -15,6 +15,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_rnd"
         android:padding="2dp"
+        android:elevation="7dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_logo"
         android:tint="@color/green_darker"
@@ -41,9 +42,19 @@
         android:id="@+id/tvUserMail_sideDrawerMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:hint="@string/txtRetailCreditRisk"
         android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/tvUserMail_siderMain"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/tvUserMail_siderMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/txtBSP"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 

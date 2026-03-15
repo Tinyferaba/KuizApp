@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -20,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fera.kuiz"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -29,7 +30,7 @@ android {
 
         val properties = Properties()
         properties.load(FileInputStream(project.rootProject.file("local.properties")))
-        buildConfigField("String", "SQLITE_PASSWORD", "\"${properties.getProperty("SQLITE_PASSWORD")}\"")
+        buildConfigField("String", "PASSWORD_SQLITE_DB", "\"${properties.getProperty("PASSWORD_SQLITE_DB")}\"")
         buildConfigField("String", "PASSWORD_SQLITE_USER", "\"${properties.getProperty("PASSWORD_SQLITE_USER")}\"")
         buildConfigField("String", "ACTIVITY_PASSWORD", "\"${properties.getProperty("ACTIVITY_PASSWORD")}\"")
 
@@ -77,5 +78,14 @@ dependencies {
     implementation("androidx.sqlite:sqlite:2.2.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+
+    val lifecycle_version = "2.8.1"
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
 
 }

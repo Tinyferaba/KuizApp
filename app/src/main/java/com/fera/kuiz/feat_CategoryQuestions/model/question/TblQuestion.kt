@@ -1,5 +1,6 @@
 package com.fera.kuiz.feat_CategoryQuestions.model.question
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
@@ -8,7 +9,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.fera.kuiz.common.util.DatabaseProperties
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = DatabaseProperties.TBL_QUESTION,
     foreignKeys = [
         ForeignKey(
@@ -30,4 +33,4 @@ data class TblQuestion(
     val difficulty: Int,
     val dateAdded: Long,
     val dataStatus: Int
-)
+) : Parcelable

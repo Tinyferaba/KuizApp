@@ -1,5 +1,6 @@
 package com.fera.kuiz.feat_CategoryQuestions.model.answer
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
@@ -8,7 +9,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.fera.kuiz.common.util.DatabaseProperties
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = DatabaseProperties.TBL_ANSWER,
     foreignKeys = [
         ForeignKey(
@@ -24,5 +27,6 @@ data class TblAnswer(
     @PrimaryKey(autoGenerate = false)
     val pkAnswerId: Long,
     val fkAnswer_questionId: Long,
-    val answer: String
-)
+    val answer: String,
+    val isCorrect: Boolean
+) : Parcelable

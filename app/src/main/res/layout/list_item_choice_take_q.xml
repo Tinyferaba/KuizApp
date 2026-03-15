@@ -29,8 +29,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/bg_rnd"
-        android:backgroundTint="@color/green_dark"
-        android:src="@drawable/ic_check"
+        android:backgroundTint="@color/red"
+        android:src="@drawable/ic_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

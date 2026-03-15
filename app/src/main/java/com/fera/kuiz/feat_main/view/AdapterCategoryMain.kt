@@ -2,6 +2,7 @@ package com.fera.kuiz.feat_main.view
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterCategory): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
 
-
+    private val TAG = "AdapterCategoryMain"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val b = ListItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(b)
@@ -29,11 +30,14 @@ class AdapterCategoryMain(private var listCategory: List<TblCategory>, private v
         holder.b.apply {
             val tblCategory = listCategory[position]
 
+
+
             tblCategory.iconFilePath?.let {
                 Glide.with(context)
                     .load(it)
                     .into(sivCategoryIconLiMain)
             }
+
 
             tvCategoryLiMain.text = tblCategory.title
             tvCatDescriptionLiMain.text = tblCategory.description
@@ -42,23 +46,11 @@ class AdapterCategoryMain(private var listCategory: List<TblCategory>, private v
             cpbCatProgressLiMain.progress = tblCategory.totalQAnswered
 
             sivCategoryIconLiMain.setOnClickListener {
-                val intent = Intent(context, AddQuestionActivity::class.java)
-                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                context.startActivity(intent)
+                actions.gotoAddQuestionActivity()
             }
 
             root.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val holderQAAndUA = actions.getQuestion(tblCategory.lastQuestionTakenId)
-
-                    withContext(Dispatchers.IO){
-                        val intent = Intent(context, TakeQuizActivity::class.java)
-                        intent.putExtra(Const.CATEGORY, tblCategory)
-                        intent.putExtra(Const.QuestionAnswerAndUserAnswer, holderQAAndUA)
-                        intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                        context.startActivity(intent)
-                    }
-                }
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId)
             }
         }
     }
