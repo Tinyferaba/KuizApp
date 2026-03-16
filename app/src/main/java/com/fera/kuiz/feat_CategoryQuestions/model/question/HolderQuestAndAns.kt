@@ -8,12 +8,12 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class HolderQuestAndAns(
     val tblQuestion: TblQuestion,
-    val tblAnswer: ArrayList<TblAnswer>
+    val listAnswers: ArrayList<TblAnswer>
 ): Parcelable
 
 
 @Parcelize
 data class HolderCatQuestAndAns(
     val tblCategory: TblCategory,
-    val holderQuestAndAns: ArrayList<HolderQuestAndAns>
+    val listHolderQuestAndAns: ArrayList<HolderQuestAndAns>
 ): Parcelable

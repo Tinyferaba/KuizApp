@@ -15,7 +15,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterCategory): RecyclerView.Adapter<AdapterRecentCat.MyViewHolder>() {
+class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterRecentCat): RecyclerView.Adapter<AdapterRecentCat.MyViewHolder>() {
+
+    interface InterfaceAdapterRecentCat {
+        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val b = ListItemRecentCatBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -32,17 +36,7 @@ class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val
             pbProgressLiRecent.progress = tblCategory.totalQAnswered
 
             root.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val holderQAAndUA = actions.getQuestion(tblCategory.lastQuestionTakenId)
-
-                    withContext(Dispatchers.IO){
-                        val intent = Intent(context, TakeQuizActivity::class.java)
-                        intent.putExtra(Const.CATEGORY, tblCategory)
-                        intent.putExtra(Const.QuestionAnswerAndUserAnswer, holderQAAndUA)
-                        intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                        context.startActivity(intent)
-                    }
-                }
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, true)
             }
         }
     }

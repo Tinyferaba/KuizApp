@@ -24,7 +24,7 @@ data class HolderQuesAnsAndUserAns(
     var pkAnswerId: Long = 0L,
     var answer: String? = "",
 
-    var pkUserAnswerId: Long = 0L,
+    var fkUserAnswer_AnswerId: Long = 0L,
     var answerUser: String? = "",
     var isCorrect: Boolean = false,
     var qStartTakenDate: Long = 0L

@@ -18,9 +18,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterCategory): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
+class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceCategoryMain): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
 
-    private val TAG = "AdapterCategoryMain"
+    interface InterfaceCategoryMain {
+        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean)
+        fun gotoAddQuestionActivity()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val b = ListItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(b)
@@ -29,8 +33,6 @@ class AdapterCategoryMain(private var listCategory: List<TblCategory>, private v
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.b.apply {
             val tblCategory = listCategory[position]
-
-
 
             tblCategory.iconFilePath?.let {
                 Glide.with(context)
@@ -45,12 +47,19 @@ class AdapterCategoryMain(private var listCategory: List<TblCategory>, private v
             cpbCatProgressLiMain.max = tblCategory.totalQuestions
             cpbCatProgressLiMain.progress = tblCategory.totalQAnswered
 
+            val progressPercentage = 100 * (tblCategory.totalQAnswered.toFloat() / tblCategory.totalQuestions.toFloat())
+            if (progressPercentage == 0f){
+                tvProgressPercentLiMain.text = "0 %"
+            } else {
+                tvProgressPercentLiMain.text = "${progressPercentage.toInt()} %"
+            }
+
             sivCategoryIconLiMain.setOnClickListener {
                 actions.gotoAddQuestionActivity()
             }
 
             root.setOnClickListener {
-                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId)
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, false)
             }
         }
     }

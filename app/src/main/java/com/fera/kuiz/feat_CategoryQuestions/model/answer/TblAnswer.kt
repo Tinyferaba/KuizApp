@@ -28,5 +28,6 @@ data class TblAnswer(
     val pkAnswerId: Long,
     val fkAnswer_questionId: Long,
     val answer: String,
+    val description: String,
     val isCorrect: Boolean
 ) : Parcelable

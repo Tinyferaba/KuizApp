@@ -16,4 +16,6 @@
     <string name="txtBSP">BSP</string>
     <string name="txtTrue">True</string>
     <string name="txtFalse">False</string>
+    <string name="tagClosed">Closed</string>
+    <string name="tagOpened">Opened</string>
 </resources>

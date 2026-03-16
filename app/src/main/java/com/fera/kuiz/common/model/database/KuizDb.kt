@@ -11,6 +11,7 @@ import com.fera.kuiz.feat_CategoryQuestions.model.answer.DaoAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.answer.TblAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.question.DaoQuestion
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.DaoUserAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.TblUserAnswer
 import com.fera.kuiz.feat_takeQuiz.model.DaoCategory
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
@@ -31,7 +32,7 @@ abstract class KuizDb: RoomDatabase() {
     abstract fun daoCategory(): DaoCategory
     abstract fun daoQuestion(): DaoQuestion
     abstract fun daoAnswer(): DaoAnswer
-
+    abstract fun daoUserAnswer(): DaoUserAnswer
 
 
     companion object {
@@ -52,7 +53,7 @@ abstract class KuizDb: RoomDatabase() {
                     context.applicationContext,
                     KuizDb::class.java,
                     "kuiz_db.db")
-                    .openHelperFactory(factory)
+//                    .openHelperFactory(factory)
                     .createFromAsset("database/kuiz_db.db")
                     .build()
 

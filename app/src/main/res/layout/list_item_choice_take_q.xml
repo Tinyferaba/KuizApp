@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
     android:background="@drawable/bg_rect_r5_choice"
     android:backgroundTint="@color/white"
-    android:padding="8dp"
-    android:layout_marginBottom="20dp"
-    android:layout_height="wrap_content">
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/tvChoice"
+        android:id="@+id/tvChoiceLiTakeQuiz"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -19,32 +19,37 @@
         android:maxLines="3"
         android:text="Option"
         android:textColor="@color/green_darker"
-        android:textSize="15sp"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ivChoiceIndicator"
+        android:id="@+id/ivChoiceIndicatorLiTakeQuiz"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/bg_rnd"
-        android:backgroundTint="@color/red"
-        android:src="@drawable/ic_close"
+        android:backgroundTint="@color/green_dark"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvChoiceDescription"
+        android:id="@+id/tvChoiceDescriptionLiTakeQuiz"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Description"
+        android:visibility="gone"
+        android:textSize="15sp"
         android:textColor="@color/greenish_grey_dark"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tvChoice"
-        app:layout_constraintStart_toStartOf="@+id/tvChoice"
-        app:layout_constraintTop_toBottomOf="@+id/tvChoice" />
+        app:layout_constraintEnd_toEndOf="@+id/tvChoiceLiTakeQuiz"
+        app:layout_constraintStart_toStartOf="@+id/tvChoiceLiTakeQuiz"
+        app:layout_constraintTop_toBottomOf="@+id/tvChoiceLiTakeQuiz" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,15 @@ interface DaoUserAnswer : InterfaceUserAnswer{
     @Insert(onConflict = REPLACE)
     override suspend fun updateUserAnswer(tblUserAnswer: TblUserAnswer)
 
-    @Query("delete from tbluseranswer where pkUserAnswerId = :pkUserAnswerId")
-    override suspend fun deleteUserAnswer(pkUserAnswerId: Long)
+    @Query("delete from tbluseranswer where fkUserAnswer_questionId = :pkQuesId and fkUserAnswer_AnswerId = :pkAnsId")
+    override suspend fun deleteUserAnswerByQuesIdAnsId(pkQuesId: Long, pkAnsId: Long)
+
+    @Query("delete from tbluseranswer where fkUserAnswer_AnswerId = :pkAnswerId")
+    override suspend fun deleteUserAnswerByAnswerId(pkAnswerId: Long)
+
+    @Query("select * from tbluseranswer where fkUserAnswer_AnswerId = :pkAnswerId")
+    override suspend fun getAnswersByAnswerId(pkAnswerId: Long): List<TblUserAnswer>
+
+//    @Query("""delete from tblUserAnswer where fkUserAnswer_questionId = :pkLastTakenQuestId and """)
+//    override suspend fun deleteUserAnswersGreaterThanLastTakenQuestionNo(pkLastTakenQuestId: Long, lastTakenQuestNo: Int)
 }

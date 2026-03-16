@@ -47,8 +47,7 @@ class MainController(application: Application) : AndroidViewModel(application), 
         return daoCategory.getQuestionList(pkCategoryId)
     }
 
-    suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): ArrayList<HolderCatQuestAndAns>{
-        val listHolderQuesAnsAndUserAns = arrayListOf<HolderCatQuestAndAns>()
+    suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
         val listHolderQuestAndAns = arrayListOf<HolderQuestAndAns>()
 
         val tblCategory = daoCategory.getCategory(pkCategoryId)
@@ -59,9 +58,7 @@ class MainController(application: Application) : AndroidViewModel(application), 
             listHolderQuestAndAns.add(HolderQuestAndAns(tblQuestion, ArrayList(listAnswers)))
         }
 
-        listHolderQuesAnsAndUserAns.add(HolderCatQuestAndAns(tblCategory, listHolderQuestAndAns))
-
-        return listHolderQuesAnsAndUserAns
+        return HolderCatQuestAndAns(tblCategory, listHolderQuestAndAns)
     }
 
 }

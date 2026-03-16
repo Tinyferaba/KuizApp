@@ -17,7 +17,7 @@ object DatabaseProperties {
     const val TBL_ANSWER_fkAnswer_questionId = "fkAnswer_questionId"
 
     const val TBL_USER_ANSWER = "tblUserAnswer"
-    const val TBL_USER_ANSWER_pkUserAnswerId = "pkUserAnswerId"
+    const val TBL_USER_ANSWER_fkUserAnswer_AnswerId = "fkUserAnswer_AnswerId"
     const val TBL_USER_ANSWER_fkUserAnswer_questionId = "fkUserAnswer_questionId"
     const val TBL_USER_ANSWER_fkUserAnswer_userRegistrationId = "fkUserAnswer_userRegistrationId"
 

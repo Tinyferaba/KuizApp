@@ -5,5 +5,11 @@ interface InterfaceUserAnswer {
 
     suspend fun updateUserAnswer(tblUserAnswer: TblUserAnswer)
 
-    suspend fun deleteUserAnswer(pkUserAnswerId: Long)
+    suspend fun deleteUserAnswerByQuesIdAnsId(pkQuesId: Long, pkAnsId: Long)
+
+    suspend fun deleteUserAnswerByAnswerId(pkAnswerId: Long)
+
+    suspend fun getAnswersByAnswerId(pkAnswerId: Long): List<TblUserAnswer>
+
+//    suspend fun deleteUserAnswersGreaterThanLastTakenQuestionNo(pkLastTakenQuestId: Long, lastTakenQuestNo: Int)
 }

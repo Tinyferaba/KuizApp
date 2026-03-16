@@ -1,8 +1,10 @@
 package com.fera.kuiz.feat_main.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -19,7 +21,6 @@ import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ActivityMainBinding
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
 import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
 import com.fera.kuiz.feat_main.controller.MainController
@@ -30,7 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
+class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.InterfaceAdapterRecentCat, AdapterCategoryMain.InterfaceCategoryMain {
     private val TAG = "MainActivity"
 
     //########## CONST & DEFAULT VAL #############//
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
     private lateinit var adapterCategoryMain: AdapterCategoryMain
     private var listCategory = emptyList<TblCategory>()
 
-    private lateinit var mainController: MainController
+    private lateinit var controllerMain: MainController
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -69,18 +70,17 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
 
         initViews()
         addActionListeners()
-//        loadData(mainController, this)
-
     }
 
     private fun initViews() {
-        mainController = ViewModelProvider(this)[MainController::class.java]
+        controllerMain = ViewModelProvider(this)[MainController::class.java]
 
         adapterRecentCat = AdapterRecentCat(listRecentCat, this, this)
-        b.rvRecentCat.layoutManager = LinearLayoutManager(this)
+        b.rvRecentCat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
         b.rvRecentCat.adapter = adapterRecentCat
 
-        mainController.categoriesRecent.observe(this@MainActivity) {
+        controllerMain.categoriesRecent.observe(this@MainActivity) {
             adapterRecentCat.updateList(it)
             listRecentCat = it
         }
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
         b.rvCategory.layoutManager = LinearLayoutManager(this)
         b.rvCategory.adapter = adapterCategoryMain
 
-        mainController.categories.observe(this@MainActivity) { it ->
+        controllerMain.categories.observe(this@MainActivity) { it ->
             adapterCategoryMain.updateList(it)
             listCategory = it
         }
@@ -147,11 +147,11 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
     }
 
     override suspend fun getQuestion(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
-        return mainController.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
+        return controllerMain.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
     }
 
     override suspend fun getQuestionInCategory(pkCategoryId: Long): List<HolderQuesAnsAndUserAns> {
-        return mainController.getQuestionList(pkCategoryId)
+        return controllerMain.getQuestionList(pkCategoryId)
     }
 
     override fun gotoAddQuestionActivity() {
@@ -160,26 +160,25 @@ class MainActivity : AppCompatActivity(), InterfaceAdapterCategory {
         startActivity(intent)
     }
 
-    override fun gotoTakeQuizActivity(pkCategoryId: Long) {
+    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val holder = getQuestionInCategory(pkCategoryId)
-            val h2 = getHolderCatQuestAndAns(pkCategoryId)
+            val holderCatQuestAndAns = getHolderCatQuestAndAns(pkCategoryId)
 
-            Log.d(TAG, "gotoTakeQuizActivity: $holder")
-            Log.d(TAG, "gotoTakeQuizActivity: $h2")
+            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
 
             withContext(Dispatchers.Main){
                 val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                intent.putParcelableArrayListExtra(Const.QuestionAnswerAndUserAnswer, ArrayList(holder))
+                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
                 startActivity(intent)
             }
         }
     }
 
 
-    override suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): ArrayList<HolderCatQuestAndAns> {
-        return mainController.getHolderCatQuestAndAns(pkCategoryId)
+    override suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
+        return controllerMain.getHolderCatQuestAndAns(pkCategoryId)
     }
 
 }

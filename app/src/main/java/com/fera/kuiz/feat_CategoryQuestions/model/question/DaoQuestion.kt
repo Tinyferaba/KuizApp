@@ -22,7 +22,7 @@ interface DaoQuestion : InterfaceQuestion, InterfaceCQuestion {
     @Query("select * from tblquestion where pkQuestionId = :pkQuestionId")
     override suspend fun getQuestion(pkQuestionId: Long): TblQuestion
 
-    @Query("select * from tblQuestion where fkQuestion_categoryId = :pkCategoryId")
+    @Query("select * from tblQuestion where fkQuestion_categoryId = :pkCategoryId order by questionNo asc")
     override suspend fun getQuestions(pkCategoryId: Long): List<TblQuestion>
 
     @Query("select * from tblCategory where pkCategoryId = :pkCategoryId")

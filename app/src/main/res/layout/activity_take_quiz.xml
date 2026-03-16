@@ -37,16 +37,16 @@
             android:layout_weight="2">
 
             <TextView
-                android:id="@+id/tvQuestiontakeQues"
+                android:id="@+id/tvQuestionTakeQues"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="18dp"
                 android:gravity="center"
                 android:text="@string/demoQuestion"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -57,11 +57,12 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
+        <!--Note:     ########## TRUE OR FALSE #########       -->
             <LinearLayout
                 android:id="@+id/llTrueOrFalseTakeQues"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -139,6 +140,7 @@
 
             </LinearLayout>
 
+        <!--Note:     ########## MULTIPLE CHOICE #########       -->
             <LinearLayout
                 android:id="@+id/llMultipleChoiceTakeQues"
                 android:layout_width="match_parent"
@@ -159,18 +161,33 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvCategoryTakeQues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="@string/txtCategory"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBackTakeQues"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivBackTakeQues" />
+
+    <TextView
         android:id="@+id/tvQuestionNumberTakeQues"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Question 3 of 23"
+        android:layout_marginTop="4dp"
+        android:text="3 of 23"
         android:textColor="@color/greenish_grey"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivBackTakeQues"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivBackTakeQues" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryTakeQues" />
 
     <ImageView
         android:id="@+id/ivBackTakeQues"
@@ -199,11 +216,12 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="5dp"
+        android:tag="@string/tagClosed"
         app:layout_constraintBottom_toBottomOf="@+id/ivPreviousTakeQues"
         app:layout_constraintEnd_toStartOf="@+id/ivNextTakeQues"
         app:layout_constraintStart_toEndOf="@+id/ivPreviousTakeQues"
         app:layout_constraintTop_toTopOf="@+id/ivPreviousTakeQues"
-        app:srcCompat="@drawable/ic_eye_open" />
+        app:srcCompat="@drawable/ic_eye_close" />
 
     <ImageView
         android:id="@+id/ivNextTakeQues"

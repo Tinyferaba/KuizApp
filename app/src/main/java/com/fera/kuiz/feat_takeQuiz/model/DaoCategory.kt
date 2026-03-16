@@ -57,7 +57,7 @@ interface DaoCategory : InterfaceCategory {
                 a.pkAnswerId,
                 a.answer,
                 
-                ua.pkUserAnswerId,
+                ua.fkUserAnswer_AnswerId,
                 ua.answerUser,
                 ua.isCorrect,
                 ua.qStartTakenDate
@@ -89,7 +89,7 @@ interface DaoCategory : InterfaceCategory {
                 a.pkAnswerId,
                 a.answer,
                 
-                ua.pkUserAnswerId,
+                ua.fkUserAnswer_AnswerId,
                 ua.answerUser,
                 ua.isCorrect,
                 ua.qStartTakenDate
