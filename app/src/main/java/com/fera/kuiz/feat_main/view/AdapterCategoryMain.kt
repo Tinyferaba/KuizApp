@@ -1,28 +1,18 @@
 package com.fera.kuiz.feat_main.view
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.fera.kuiz.BuildConfig
-import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ListItemCategoryBinding
-import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
-import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceCategoryMain): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
 
     interface InterfaceCategoryMain {
-        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean)
-        fun gotoAddQuestionActivity()
+        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)
+        fun gotoCategoryActivity(tblCategory: TblCategory)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -55,11 +45,11 @@ class AdapterCategoryMain(private var listCategory: List<TblCategory>, private v
             }
 
             sivCategoryIconLiMain.setOnClickListener {
-                actions.gotoAddQuestionActivity()
+                actions.gotoCategoryActivity(tblCategory)
             }
 
             root.setOnClickListener {
-                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, false)
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, false, 0)
             }
         }
     }

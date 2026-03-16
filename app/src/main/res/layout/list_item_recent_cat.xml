@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="140dp"
+    android:layout_width="160dp"
     android:layout_height="80dp"
     android:layout_marginEnd="5dp"
     android:background="@drawable/bg_rect_r2_recent">
@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:text="@string/txtCategory"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -34,7 +34,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/txtCorrect"
         android:textColor="@color/greenish_grey"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -62,7 +62,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/txtProgress"
         android:textColor="@color/greenish_grey"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

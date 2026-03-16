@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterRecentCat): RecyclerView.Adapter<AdapterRecentCat.MyViewHolder>() {
 
     interface InterfaceAdapterRecentCat {
-        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean)
+        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,7 +36,7 @@ class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val
             pbProgressLiRecent.progress = tblCategory.totalQAnswered
 
             root.setOnClickListener {
-                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, true)
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, true, tblCategory.lastQuestionTakenNo)
             }
         }
     }

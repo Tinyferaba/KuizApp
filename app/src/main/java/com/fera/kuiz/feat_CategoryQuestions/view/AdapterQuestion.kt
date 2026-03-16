@@ -14,7 +14,12 @@ import com.fera.kuiz.databinding.ListItemQuestionBinding
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
 
-class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val context: Context) : RecyclerView.Adapter<AdapterQuestion.MyViewHolder>() {
+class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val context: Context, private val actions: InterfaceAdapterQuestion) : RecyclerView.Adapter<AdapterQuestion.MyViewHolder>() {
+
+    interface InterfaceAdapterQuestion {
+        fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = ListItemQuestionBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(v)
@@ -41,10 +46,7 @@ class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val c
             }
 
             root.setOnClickListener {
-                val intent = Intent(context, TakeQuizActivity::class.java)
-                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                // TODO: Make Questions Parcelable and pass in as extra
-                context.startActivity(intent)
+                actions.gotoTakeQuizActivity(tblQuestion.fkQuestion_categoryId, true, tblQuestion.questionNo-1)
             }
         }
     }

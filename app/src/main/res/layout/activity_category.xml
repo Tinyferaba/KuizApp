@@ -25,9 +25,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_rnd"
+        android:elevation="7dp"
         android:padding="2dp"
         android:scaleType="centerCrop"
-        android:elevation="7dp"
         android:src="@drawable/ic_logo"
         android:tint="@color/green_darkest"
         app:contentPadding="20dp"
@@ -40,24 +40,25 @@
         app:strokeWidth="1dp" />
 
     <ImageView
-        android:id="@+id/icEditCategoryIconCat"
+        android:id="@+id/ivEditCategoryIconCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:src="@drawable/ic_edit"
-        android:elevation="7dp"
         android:background="@drawable/bg_rnd"
-        app:backgroundTint="@color/greenish_grey"
+        android:elevation="7dp"
         android:padding="4dp"
+        android:src="@drawable/ic_edit"
+        app:backgroundTint="@color/greenish_grey"
         app:layout_constraintBottom_toBottomOf="@+id/sivCategoryIconCat"
         app:layout_constraintEnd_toEndOf="@+id/sivCategoryIconCat" />
 
     <ImageView
-        android:id="@+id/ivbackCat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/ivBackCat"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:padding="5dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -123,20 +124,20 @@
 
     <EditText
         android:id="@+id/edtTitleCat"
-        android:background="@color/transparent"
-        android:inputType="none"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:background="@color/transparent"
         android:fontFamily="monospace"
         android:hint="@string/txtCategory"
-        android:textColorHint="@color/greenish_grey"
+        android:inputType="none"
+        android:maxLines="1"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:maxLines="1"
+        android:textColorHint="@color/greenish_grey"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/sivCategoryIconCat"
@@ -146,17 +147,17 @@
         app:layout_constraintVertical_bias="1.0" />
 
 
-<!--    <ImageView-->
-<!--        android:id="@+id/ivSaveCat"-->
-<!--        android:layout_width="35dp"-->
-<!--        android:layout_height="35dp"-->
-<!--        android:padding="5dp"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/tvTitleCat"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/tvTitleCat"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/tvTitleCat"-->
-<!--        app:srcCompat="@drawable/ic_check" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/ivSaveCat"-->
+    <!--        android:layout_width="35dp"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:layout_marginEnd="24dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/tvTitleCat"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/tvTitleCat"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/tvTitleCat"-->
+    <!--        app:srcCompat="@drawable/ic_check" />-->
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -194,13 +195,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
     <!--    <ImageView-->
-<!--        android:id="@+id/ivAddQuestionCat"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:layout_marginBottom="60dp"-->
-<!--        android:src="@drawable/ic_add_fill"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+    <!--        android:id="@+id/ivAddQuestionCat"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="24dp"-->
+    <!--        android:layout_marginBottom="60dp"-->
+    <!--        android:src="@drawable/ic_add_fill"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

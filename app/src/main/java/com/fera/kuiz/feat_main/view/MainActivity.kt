@@ -21,8 +21,8 @@ import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ActivityMainBinding
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
-import com.fera.kuiz.feat_CategoryQuestions.view.AddQuestionActivity
+import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.view.CategoryActivity
 import com.fera.kuiz.feat_main.controller.MainController
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
@@ -101,12 +101,6 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.Int
             showHideSideDrawer()
         }
 
-        b.ivToggleNavViewMain.setOnClickListener {
-            val intent = Intent(this, AddQuestionActivity::class.java)
-            intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-            startActivity(intent)
-        }
-
 //        b.ivAddCategoryMain.setOnClickListener {
 //            toastLong("Unable to add Categories now")
 //
@@ -146,23 +140,23 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.Int
             window.navigationBarColor = getColor(R.color.transparent)
     }
 
-    override suspend fun getQuestion(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
-        return controllerMain.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
-    }
-
-    override suspend fun getQuestionInCategory(pkCategoryId: Long): List<HolderQuesAnsAndUserAns> {
-        return controllerMain.getQuestionList(pkCategoryId)
-    }
-
-    override fun gotoAddQuestionActivity() {
-        val intent = Intent(this, AddQuestionActivity::class.java)
-        intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-        startActivity(intent)
-    }
-
-    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean) {
+    override fun gotoCategoryActivity(tblCategory: TblCategory) {
         CoroutineScope(Dispatchers.IO).launch {
-            val holderCatQuestAndAns = getHolderCatQuestAndAns(pkCategoryId)
+            val listQuestions = controllerMain.getQuestionList(tblCategory.pkCategoryId)
+
+            withContext(Dispatchers.Main){
+                val intent = Intent(this@MainActivity, CategoryActivity::class.java)
+                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+                intent.putExtra(Const.CATEGORY, tblCategory)
+                intent.putExtra(Const.QUESTION_LIST, ArrayList(listQuestions))
+                startActivity(intent)
+            }
+        }
+    }
+
+    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAns(pkCategoryId)
 
             Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
 
@@ -170,15 +164,10 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.Int
                 val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
                 intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
                 startActivity(intent)
             }
         }
     }
-
-
-    override suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
-        return controllerMain.getHolderCatQuestAndAns(pkCategoryId)
-    }
-
 }

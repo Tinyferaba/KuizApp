@@ -94,7 +94,6 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         super.onDestroy()
     }
 
-
     private fun addActionListeners() {
         b.ivBackTakeQues.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -142,8 +141,6 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         b.rvChoiceTakeQues.adapter = adapterAnswer
 
         //Note: Called only once to load the first question
-        if (continueQuestion)
-            currentQuestionPosition = holderCatQuesAndAns.tblCategory.lastQuestionTakenNo
         loadAndSetNextQuestion(currentQuestionPosition)
     }
 
@@ -151,11 +148,12 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private fun loadAllData() {
         val holderList = intent.getParcelableExtra<HolderCatQuestAndAns>(Const.HolderCatQuestAndAns)
         val continueQues = intent.getBooleanExtra(Const.CONTINUE_QUESTION, false)
+        val continueQuesNo = intent.getIntExtra(Const.CONTINUE_QUESTION_NO, 0)
 
         if (holderList != null) {
+            currentQuestionPosition = continueQuesNo
             holderCatQuesAndAns = holderList
             continueQuestion = continueQues
-            currentQuestionPosition = 0
             totalQuestions = holderCatQuesAndAns.listHolderQuestAndAns.size
         } else {
             toastLong("Error Loading Data")

@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 
 @Dao
 interface DaoCategory : InterfaceCategory {
@@ -30,77 +30,13 @@ interface DaoCategory : InterfaceCategory {
      fun getCategories(): LiveData<List<TblCategory>>
 
     @Query("""
-                        select *
-                        from  tblCategory
+                        select * from  tblCategory
+                        where qStartTakenDate > 0
                         order by qStartTakenDate desc limit 10
             """)
      fun getRecentCategories(): LiveData<List<TblCategory>>
 
-    @Query(
-        """
-            select 
-                c.pkCategoryId,
-                c.iconFilePath,
-                c.noteFilePath,
-                c.totalQuestions,
-                c.lastQuestionTakenId,
-                c.lastQuestionTakenNo,
-                
-                q.pkQuestionId,
-                q.questionNo,
-                q.questionType,
-                q.question,
-                q.difficulty,
-                q.dateAdded,
-                q.dataStatus,
-                
-                a.pkAnswerId,
-                a.answer,
-                
-                ua.fkUserAnswer_AnswerId,
-                ua.answerUser,
-                ua.isCorrect,
-                ua.qStartTakenDate
-            from tblCategory c 
-                left join tblquestion q on c.pkCategoryId = q.fkQuestion_categoryId
-                left join tblanswer a on q.pkQuestionId = a.fkAnswer_questionId
-                left join tbluseranswer ua on q.pkQuestionId = ua.fkUserAnswer_questionId
-            where q.pkQuestionId = :pkLastQuestionTakenId
-        """
-    )
-    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns
-
-    @Query("""select 
-                c.pkCategoryId,
-                c.iconFilePath,
-                c.noteFilePath,
-                c.totalQuestions,
-                c.lastQuestionTakenId,
-                c.lastQuestionTakenNo,
-                
-                q.pkQuestionId,
-                q.questionNo,
-                q.questionType,
-                q.question,
-                q.difficulty,
-                q.dateAdded,
-                q.dataStatus,
-                
-                a.pkAnswerId,
-                a.answer,
-                
-                ua.fkUserAnswer_AnswerId,
-                ua.answerUser,
-                ua.isCorrect,
-                ua.qStartTakenDate
-            from tblCategory c 
-                left join tblquestion q on c.pkCategoryId = q.fkQuestion_categoryId
-                left join tblanswer a on q.pkQuestionId = a.fkAnswer_questionId
-                left join tbluseranswer ua on q.pkQuestionId = ua.fkUserAnswer_questionId
-            where c.pkCategoryId = :pkCategoryId
-                """)
-    override suspend fun getQuestionList(pkCategoryId: Long): List<HolderQuesAnsAndUserAns>
-
-
+    @Query("""select * from tblQuestion where fkQuestion_categoryId = :pkCategoryId""")
+    override suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion>
 
 }

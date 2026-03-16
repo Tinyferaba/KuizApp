@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_marginBottom="4dp"
     android:background="@drawable/bg_rect_r3_cat"
-    android:layout_height="64dp">
+    android:layout_height="65dp">
 
 <!--    <ImageView-->
 <!--        android:id="@+id/imageView2"-->
@@ -21,10 +21,9 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/sivCategoryIconLiMain"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_rnd"
         android:padding="2dp"
         android:scaleType="centerCrop"
@@ -43,17 +42,17 @@
         android:id="@+id/tvCategoryLiMain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:maxLines="1"
         android:text="@string/txtCategory"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:maxLines="1"
-        app:layout_constraintBottom_toTopOf="@+id/tvCatDescriptionLiMain"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvCatDescriptionLiMain"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCatDescriptionLiMain"
@@ -61,15 +60,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/txtDescription"
         android:maxLines="1"
+        android:text="@string/txtDescription"
         android:textColor="@color/greenish_grey"
         app:layout_constraintBottom_toBottomOf="@+id/sivCategoryIconLiMain"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/sivCategoryIconLiMain"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryLiMain"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <ImageView

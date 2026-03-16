@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
 import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuesAnsAndUserAns
+import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.InterfaceCategory
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 
@@ -39,11 +39,7 @@ class MainController(application: Application) : AndroidViewModel(application), 
         return daoCategory.getCategory(pkCategoryId)
     }
 
-    override suspend fun getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId: Long): HolderQuesAnsAndUserAns {
-        return daoCategory.getQuestionAnswerAndUserAnswer(pkLastQuestionTakenId)
-    }
-
-    override suspend fun getQuestionList(pkCategoryId: Long): List<HolderQuesAnsAndUserAns> {
+    override suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion> {
         return daoCategory.getQuestionList(pkCategoryId)
     }
 

@@ -3,6 +3,7 @@ package com.fera.kuiz.feat_CategoryQuestions.view
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,36 +11,41 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
+import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.databinding.ActivityCategoryBinding
 import com.fera.kuiz.feat_CategoryQuestions.controller.CategoryController
 import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
-import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class CategoryActivity : AppCompatActivity() {
+class CategoryActivity : AppCompatActivity(), AdapterQuestion.InterfaceAdapterQuestion {
+    private val TAG = "CategoryActivity"
+
     private lateinit var b: ActivityCategoryBinding
-
     private var tblCategory: TblCategory ?= null
 
     private lateinit var adapterQuestion: AdapterQuestion
     private var listQuestion = emptyList<TblQuestion>()
 
 
-    private lateinit var categoryController: CategoryController
+    private lateinit var controllerCategory: CategoryController
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         if (intent.getStringExtra(Const.ACTIVITY_KEY) != BuildConfig.ACTIVITY_PASSWORD) {
             finish()
         }
+
+        loadAllData()
 
         super.onCreate(savedInstanceState)
         b = ActivityCategoryBinding.inflate(layoutInflater)
@@ -60,51 +66,52 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun addActionListeners() {
-        b.ivbackCat.setOnClickListener {
+        b.ivBackCat.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        b.ivEditCategoryIconCat.setOnClickListener {
+            toastLong("Edit Icon Disabled")
+        }
         b.ivTakeQuizCat.setOnClickListener {
-            val intent = Intent(this, TakeQuizActivity::class.java)
-            intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-            // TODO: load Questions (Parcelable) and pass in as extra
-            startActivity(intent)
+            tblCategory?.pkCategoryId?.let {
+                gotoTakeQuizActivity(it, false, 0)
+            }
         }
     }
 
     private fun initView() {
-        categoryController = ViewModelProvider(this)[CategoryController::class.java]
+        controllerCategory = ViewModelProvider(this)[CategoryController::class.java]
 
-        adapterQuestion = AdapterQuestion(listQuestion, this)
+        adapterQuestion = AdapterQuestion(listQuestion, this, this)
         b.rvQuestionsCat.layoutManager = LinearLayoutManager(this)
         b.rvQuestionsCat.adapter = adapterQuestion
 
-        loadProperty()
-    }
-
-    private fun loadProperty(){
-        tblCategory = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
         tblCategory?.let {
             b.edtTitleCat.setText(it.title)
-
             b.pbCorrectCat.max = it.totalQAnswered
             b.pbCorrectCat.progress = it.totalCorrectAnswers
-
             b.pbProgressCat.max = it.totalQuestions
             b.pbProgressCat.progress = it.totalQAnswered
-
             it.iconFilePath?.let {
                 Glide.with(this)
                     .load(it)
                     .into(b.sivCategoryIconCat)
             }
-
-            lifecycleScope.launch {
-                categoryController.getQuestions(it.pkCategoryId).let { list ->
-                    listQuestion = list
-                    adapterQuestion.updateList(listQuestion)
-                }
-            }
         }
+    }
+
+    private fun loadAllData(){
+        val category = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
+        val questionsList = intent.getParcelableArrayListExtra<TblQuestion>(Const.QUESTION_LIST)
+
+        if (category == null || questionsList == null){
+            toastLong("Error Loading Data")
+            Log.d(TAG, "loadAllData: \tCategory: $category\tQuestionList: $questionsList")
+            return
+        }
+
+        listQuestion = questionsList
+        tblCategory = category
     }
 
 
@@ -126,6 +133,23 @@ class CategoryActivity : AppCompatActivity() {
     private fun setNavigationBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
             window.navigationBarColor = getColor(R.color.transparent)
+    }
+
+    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val holderCatQuestAndAns = controllerCategory.getHolderCatQuestAndAns(pkCategoryId)
+
+            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
+
+            withContext(Dispatchers.Main){
+                val intent = Intent(this@CategoryActivity, TakeQuizActivity::class.java)
+                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
+                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+                startActivity(intent)
+            }
+        }
     }
 
 }
