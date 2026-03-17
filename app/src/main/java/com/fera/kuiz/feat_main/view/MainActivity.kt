@@ -1,10 +1,8 @@
 package com.fera.kuiz.feat_main.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -20,18 +18,16 @@ import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ActivityMainBinding
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
 import com.fera.kuiz.feat_CategoryQuestions.view.CategoryActivity
-import com.fera.kuiz.feat_main.controller.MainController
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_main.controller.ControllerMainAct
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.InterfaceAdapterRecentCat, AdapterCategoryMain.InterfaceCategoryMain {
+class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecentCat.InterfaceAdapterRecentCat, AdapterMainActCat.InterfaceCategoryMain {
     private val TAG = "MainActivity"
 
     //########## CONST & DEFAULT VAL #############//
@@ -39,13 +35,13 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.Int
     private lateinit var rvRecentQuestion: RecyclerView
 
     //########## VIEWS #############//
-    private lateinit var adapterRecentCat: AdapterRecentCat
+    private lateinit var adapterMainActRecentCat: AdapterMainActRecentCat
     private var listRecentCat = emptyList<TblCategory>()
 
-    private lateinit var adapterCategoryMain: AdapterCategoryMain
+    private lateinit var adapterMainActCat: AdapterMainActCat
     private var listCategory = emptyList<TblCategory>()
 
-    private lateinit var controllerMain: MainController
+    private lateinit var controllerMain: ControllerMainAct
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -73,24 +69,24 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterRecentCat.Int
     }
 
     private fun initViews() {
-        controllerMain = ViewModelProvider(this)[MainController::class.java]
+        controllerMain = ViewModelProvider(this)[ControllerMainAct::class.java]
 
-        adapterRecentCat = AdapterRecentCat(listRecentCat, this, this)
+        adapterMainActRecentCat = AdapterMainActRecentCat(listRecentCat, this, this)
         b.rvRecentCat.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        b.rvRecentCat.adapter = adapterRecentCat
+        b.rvRecentCat.adapter = adapterMainActRecentCat
 
         controllerMain.categoriesRecent.observe(this@MainActivity) {
-            adapterRecentCat.updateList(it)
+            adapterMainActRecentCat.updateList(it)
             listRecentCat = it
         }
 
-        adapterCategoryMain = AdapterCategoryMain(listCategory, this, this)
+        adapterMainActCat = AdapterMainActCat(listCategory, this, this)
         b.rvCategory.layoutManager = LinearLayoutManager(this)
-        b.rvCategory.adapter = adapterCategoryMain
+        b.rvCategory.adapter = adapterMainActCat
 
         controllerMain.categories.observe(this@MainActivity) { it ->
-            adapterCategoryMain.updateList(it)
+            adapterMainActCat.updateList(it)
             listCategory = it
         }
 

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
@@ -17,13 +18,14 @@ import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.common.util.toastShort
 import com.fera.kuiz.databinding.ActivityTakeQuizBinding
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.TblUserAnswer
-import com.fera.kuiz.feat_takeQuiz.controller.TakeQuizController
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
+import com.fera.kuiz.feat_takeQuiz.controller.ControllerTakeQuizAct
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
+import kotlinx.coroutines.launch
 import java.util.Date
 
-class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswerTakeQuiz.InterfaceAdapterAnswer {
+class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswerTakeQuizAct.InterfaceAdapterAnswer {
     // TODO: Fix Progress Tracking
 
     // ###########  CONST & VALUES  #############
@@ -46,10 +48,10 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private lateinit var b: ActivityTakeQuizBinding
 
 
-    private lateinit var adapterAnswer: AdapterAnswerTakeQuiz
+    private lateinit var adapterAnswer: AdapterAnswerTakeQuizAct
     private lateinit var holderCatQuesAndAns: HolderCatQuestAndAns
 
-    private lateinit var controllerTakeQuiz: TakeQuizController
+    private lateinit var controllerTakeQuiz: ControllerTakeQuizAct
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -57,7 +59,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
             finish()
         }
 
-        loadAllData()
+        loadParcelData()
 
         super.onCreate(savedInstanceState)
         b = ActivityTakeQuizBinding.inflate(layoutInflater)
@@ -98,7 +100,11 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         b.ivBackTakeQues.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-
+        b.ivDeleteQuestTakeQues.setOnClickListener {
+            lifecycleScope.launch {
+                controllerTakeQuiz.deleteQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.pkQuestionId)
+            }
+        }
         b.ivNextTakeQues.setOnClickListener {
             if (tblUserAnswerSelected != null){
                 tblUserAnswerSelected?.let {
@@ -134,9 +140,9 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     }
 
     private fun initViews() {
-        controllerTakeQuiz = ViewModelProvider(this)[TakeQuizController::class.java]
+        controllerTakeQuiz = ViewModelProvider(this)[ControllerTakeQuizAct::class.java]
 
-        adapterAnswer = AdapterAnswerTakeQuiz(emptyList(), this, this)
+        adapterAnswer = AdapterAnswerTakeQuizAct(emptyList(), this, this)
         b.rvChoiceTakeQues.layoutManager = LinearLayoutManager(this)
         b.rvChoiceTakeQues.adapter = adapterAnswer
 
@@ -145,7 +151,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     }
 
 
-    private fun loadAllData() {
+    private fun loadParcelData() {
         val holderList = intent.getParcelableExtra<HolderCatQuestAndAns>(Const.HolderCatQuestAndAns)
         val continueQues = intent.getBooleanExtra(Const.CONTINUE_QUESTION, false)
         val continueQuesNo = intent.getIntExtra(Const.CONTINUE_QUESTION_NO, 0)
@@ -166,6 +172,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     }
 
     private fun loadAndSetNextQuestion(questionPos: Int) {
+        Log.d(TAG, "loadAndSetNextQuestion: Position: $questionPos")
         if (questionPos == holderCatQuesAndAns.listHolderQuestAndAns.size) {
             toastShort("Hurray! Quiz Completed!")
             currentQuestionPosition--

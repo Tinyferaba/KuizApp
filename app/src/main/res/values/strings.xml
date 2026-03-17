@@ -18,4 +18,11 @@
     <string name="txtFalse">False</string>
     <string name="tagClosed">Closed</string>
     <string name="tagOpened">Opened</string>
+    <string name="txtSolution">Solution</string>
+    <string name="txtItem">Item</string>
+    <string name="txtQuestion">Question</string>
+    <string name="txtAdd">Add</string>
+    <string name="txtCancel">Cancel</string>
+    <string name="txtSave">Save</string>
+    <string name="txtEdit">Edit</string>
 </resources>

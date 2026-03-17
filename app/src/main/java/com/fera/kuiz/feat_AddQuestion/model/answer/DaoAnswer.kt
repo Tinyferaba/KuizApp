@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_CategoryQuestions.model.answer
+package com.fera.kuiz.feat_AddQuestion.model.answer
 
 import androidx.room.Dao
 import androidx.room.Insert

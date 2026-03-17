@@ -3,27 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="7dp"
-    android:background="@drawable/bg_rect_r5_choice"
-    android:layout_height="wrap_content">
+    android:background="@drawable/bg_rect_r5_choice_s1">
 
-    <TextView
-        android:id="@+id/textView14"
+    <EditText
+        android:id="@+id/edtChoiceAddQues"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/transparent"
         android:maxLines="3"
         android:paddingTop="5dp"
         android:text="@string/txtChoice"
         android:textColor="@color/green_darker"
-        app:layout_constraintEnd_toStartOf="@+id/imageView12"
+        app:layout_constraintEnd_toStartOf="@+id/ivDeleteChoiceLi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/ivDeleteChoiceLi"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
@@ -35,32 +36,34 @@
         app:tint="@color/green_darker" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:id="@+id/rgTrueFalseAddChoiceAddQues"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView12"
+        app:layout_constraintEnd_toStartOf="@+id/ivDeleteChoiceLi"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14">
+        app:layout_constraintTop_toBottomOf="@+id/edtChoiceAddQues">
 
         <RadioButton
+            android:id="@+id/rbTrueLi"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="12sp"
-            android:text="Correct" />
+            android:text="Correct"
+            android:textSize="12sp" />
 
         <RadioButton
+            android:id="@+id/rbFalseLi"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:checked="true"
-            android:textSize="12sp"
             android:layout_marginStart="40dp"
-            android:text="Incorrect" />
+            android:checked="true"
+            android:text="Incorrect"
+            android:textSize="12sp" />
 
     </RadioGroup>
 

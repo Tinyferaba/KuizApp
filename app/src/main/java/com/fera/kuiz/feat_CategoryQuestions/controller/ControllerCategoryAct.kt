@@ -2,13 +2,14 @@ package com.fera.kuiz.feat_CategoryQuestions.controller
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 
-class CategoryController(application: Application): AndroidViewModel(application),  InterfaceCQuestion{
+class ControllerCategoryAct(application: Application): AndroidViewModel(application),  InterfaceCatQuestion{
 
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
@@ -20,6 +21,10 @@ class CategoryController(application: Application): AndroidViewModel(application
 
     override suspend fun getQuestions(pkCategoryId: Long): List<TblQuestion> {
         return daoQuestion.getQuestions(pkCategoryId)
+    }
+
+    override fun getQuestionsLive(pkCategoryId: Long): LiveData<List<TblQuestion>> {
+        return daoQuestion.getQuestionsLive(pkCategoryId)
     }
 
     override suspend fun getCategory(pkCategoryId: Long): TblCategory {

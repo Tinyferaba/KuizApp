@@ -18,26 +18,27 @@ import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.databinding.ActivityCategoryBinding
-import com.fera.kuiz.feat_CategoryQuestions.controller.CategoryController
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_CategoryQuestions.controller.ControllerCategoryAct
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
+import com.fera.kuiz.feat_AddQuestion.view.AddQuestionActivity
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CategoryActivity : AppCompatActivity(), AdapterQuestion.InterfaceAdapterQuestion {
+class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapterQuestion {
     private val TAG = "CategoryActivity"
 
     private lateinit var b: ActivityCategoryBinding
     private var tblCategory: TblCategory ?= null
 
-    private lateinit var adapterQuestion: AdapterQuestion
+    private lateinit var adapterCategoryAct: AdapterCategoryAct
     private var listQuestion = emptyList<TblQuestion>()
 
 
-    private lateinit var controllerCategory: CategoryController
+    private lateinit var controllerCategory: ControllerCategoryAct
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,7 +46,7 @@ class CategoryActivity : AppCompatActivity(), AdapterQuestion.InterfaceAdapterQu
             finish()
         }
 
-        loadAllData()
+        loadParcelData()
 
         super.onCreate(savedInstanceState)
         b = ActivityCategoryBinding.inflate(layoutInflater)
@@ -77,17 +78,31 @@ class CategoryActivity : AppCompatActivity(), AdapterQuestion.InterfaceAdapterQu
                 gotoTakeQuizActivity(it, false, 0)
             }
         }
+        b.ivAddQuestionCat.setOnClickListener {
+            val intent = Intent(this, AddQuestionActivity::class.java)
+            intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+            intent.putExtra(Const.CATEGORY, tblCategory)
+            startActivity(intent)
+        }
     }
 
     private fun initView() {
-        controllerCategory = ViewModelProvider(this)[CategoryController::class.java]
+        controllerCategory = ViewModelProvider(this)[ControllerCategoryAct::class.java]
 
-        adapterQuestion = AdapterQuestion(listQuestion, this, this)
+        adapterCategoryAct = AdapterCategoryAct(listQuestion, this, this)
         b.rvQuestionsCat.layoutManager = LinearLayoutManager(this)
-        b.rvQuestionsCat.adapter = adapterQuestion
+        b.rvQuestionsCat.adapter = adapterCategoryAct
+
+        tblCategory?.pkCategoryId?.let {
+            controllerCategory.getQuestionsLive(it).observe(this){list ->
+                adapterCategoryAct.updateList(list)
+                listQuestion = list
+            }
+        }
 
         tblCategory?.let {
             b.edtTitleCat.setText(it.title)
+            b.tvCatDescriptionCat.text = it.description
             b.pbCorrectCat.max = it.totalQAnswered
             b.pbCorrectCat.progress = it.totalCorrectAnswers
             b.pbProgressCat.max = it.totalQuestions
@@ -100,17 +115,18 @@ class CategoryActivity : AppCompatActivity(), AdapterQuestion.InterfaceAdapterQu
         }
     }
 
-    private fun loadAllData(){
+    private fun loadParcelData(){
         val category = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
-        val questionsList = intent.getParcelableArrayListExtra<TblQuestion>(Const.QUESTION_LIST)
+//        val questionsList = intent.getParcelableArrayListExtra<TblQuestion>(Const.QUESTION_LIST)
 
-        if (category == null || questionsList == null){
+        if (category == null ){
+            //   || questionsList == null
             toastLong("Error Loading Data")
-            Log.d(TAG, "loadAllData: \tCategory: $category\tQuestionList: $questionsList")
+//            Log.d(TAG, "loadAllData: \tCategory: $category\tQuestionList: $questionsList")
             return
         }
 
-        listQuestion = questionsList
+//        listQuestion = questionsList
         tblCategory = category
     }
 

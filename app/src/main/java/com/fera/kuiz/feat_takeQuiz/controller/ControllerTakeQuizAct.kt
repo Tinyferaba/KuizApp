@@ -3,18 +3,19 @@ package com.fera.kuiz.feat_takeQuiz.controller
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.fera.kuiz.common.model.database.KuizDb
-import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.InterfaceUserAnswer
-import com.fera.kuiz.feat_CategoryQuestions.model.userAnswer.TblUserAnswer
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_takeQuiz.model.userAnswer.InterfaceUserAnswer
+import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 import com.fera.kuiz.feat_takeQuiz.view.InterfaceTakeQuizAct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TakeQuizController(application: Application): AndroidViewModel(application), InterfaceTakeQuizAct, InterfaceUserAnswer {
+class ControllerTakeQuizAct(application: Application): AndroidViewModel(application), InterfaceTakeQuizAct, InterfaceUserAnswer {
 
     private val daoUserAnswer = KuizDb.getDatabase(application).daoUserAnswer()
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
+    private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
 
     override suspend fun insertUserAnswer(tblUserAnswer: TblUserAnswer): Long {
         return daoUserAnswer.insertUserAnswer(tblUserAnswer)
@@ -48,4 +49,7 @@ class TakeQuizController(application: Application): AndroidViewModel(application
         }
     }
 
+    suspend fun deleteQuestion(pkQuestionId: Long){
+        daoQuestion.deleteQuestion(pkQuestionId)
+    }
 }

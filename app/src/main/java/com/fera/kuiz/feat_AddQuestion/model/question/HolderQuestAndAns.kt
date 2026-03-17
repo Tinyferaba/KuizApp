@@ -1,8 +1,8 @@
-package com.fera.kuiz.feat_CategoryQuestions.model.question
+package com.fera.kuiz.feat_AddQuestion.model.question
 
 import android.os.Parcelable
-import com.fera.kuiz.feat_CategoryQuestions.model.answer.TblAnswer
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

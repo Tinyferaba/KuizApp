@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_CategoryQuestions.model.question
+package com.fera.kuiz.feat_AddQuestion.model.question
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -7,9 +7,11 @@ import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.ForeignKey.Companion.NO_ACTION
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.fera.hymn.utils.enumeration.EnumDataInfo
 import com.fera.kuiz.common.util.DatabaseProperties
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 @Parcelize
 @Entity(tableName = DatabaseProperties.TBL_QUESTION,
@@ -26,11 +28,12 @@ import kotlinx.parcelize.Parcelize
 data class TblQuestion(
     @PrimaryKey(autoGenerate = false)
     val pkQuestionId: Long,
-    val fkQuestion_categoryId: Long,
-    val questionNo: Int,
-    val questionType: String,
-    val question: String,
-    val difficulty: Int,
-    val dateAdded: Long,
-    val dataStatus: Int
+    var fkQuestion_categoryId: Long = 0L,
+    var questionNo: Int = 0,
+    var questionType: String = "",
+    var question: String = "",
+    var difficulty: Int = 1,
+    var isTaken: Boolean = false,
+    var dateAdded: Long = Date().time,
+    var dataStatus: Int = EnumDataInfo.NONE.info
 ) : Parcelable

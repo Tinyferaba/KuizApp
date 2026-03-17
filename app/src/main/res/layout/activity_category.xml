@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
-        android:layout_height="154dp"
+        android:layout_height="180dp"
         android:background="@drawable/bg_cl_top_question"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,14 +50,15 @@
         android:src="@drawable/ic_edit"
         app:backgroundTint="@color/greenish_grey"
         app:layout_constraintBottom_toBottomOf="@+id/sivCategoryIconCat"
-        app:layout_constraintEnd_toEndOf="@+id/sivCategoryIconCat" />
+        app:layout_constraintEnd_toEndOf="@+id/sivCategoryIconCat"
+        app:tint="@color/green_darkest" />
 
     <ImageView
         android:id="@+id/ivBackCat"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:padding="5dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,9 +128,7 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
         android:background="@color/transparent"
         android:fontFamily="monospace"
         android:hint="@string/txtCategory"
@@ -140,12 +139,27 @@
         android:textColorHint="@color/greenish_grey"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/sivCategoryIconCat"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBackCat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivBackCat"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/tvCatDescriptionCat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:hint="@string/txtDescription"
+        android:textColor="@color/greenish_grey"
+        android:textColorHint="@color/greenish_grey"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/sivCategoryIconCat"
+        app:layout_constraintEnd_toEndOf="@+id/edtTitleCat"
+        app:layout_constraintStart_toEndOf="@+id/ivBackCat"
+        app:layout_constraintTop_toBottomOf="@+id/edtTitleCat" />
 
     <!--    <ImageView-->
     <!--        android:id="@+id/ivSaveCat"-->
@@ -191,17 +205,18 @@
         android:layout_marginEnd="24dp"
         android:padding="5dp"
         android:src="@drawable/ic_play"
-        android:tint="@color/green_darkest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-    <!--    <ImageView-->
-    <!--        android:id="@+id/ivAddQuestionCat"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginEnd="24dp"-->
-    <!--        android:layout_marginBottom="60dp"-->
-    <!--        android:src="@drawable/ic_add_fill"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:tint="@color/green_darkest" />
+
+    <ImageView
+        android:id="@+id/ivAddQuestionCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/ic_add_fill"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

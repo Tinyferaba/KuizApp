@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_takeQuiz.model
+package com.fera.kuiz.feat_CategoryQuestions.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 
 @Dao
 interface DaoCategory : InterfaceCategory {
@@ -39,4 +39,12 @@ interface DaoCategory : InterfaceCategory {
     @Query("""select * from tblQuestion where fkQuestion_categoryId = :pkCategoryId""")
     override suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion>
 
+    @Query("select pkCategoryId from tblCategory")
+    override suspend fun getCategoryIds(): List<Long>
+
+    @Query("""
+            select count(*) from tblCategory a
+            left join tblQuestion b on a.pkCategoryId = fkQuestion_categoryId
+            where fkQuestion_categoryId = :pkCategoryId""")
+    override suspend fun getTotalQuestionsInCategory(pkCategoryId: Long): Int
 }

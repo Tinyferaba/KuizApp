@@ -1,4 +1,4 @@
-package com.fera.kuiz.feat_CategoryQuestions.model.answer
+package com.fera.kuiz.feat_AddQuestion.model.answer
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -8,7 +8,7 @@ import androidx.room.ForeignKey.Companion.NO_ACTION
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.fera.kuiz.common.util.DatabaseProperties
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -27,7 +27,7 @@ data class TblAnswer(
     @PrimaryKey(autoGenerate = false)
     val pkAnswerId: Long,
     val fkAnswer_questionId: Long,
-    val answer: String,
-    val description: String,
-    val isCorrect: Boolean
+    var answer: String = "",
+    var description: String = "",
+    var isCorrect: Boolean = false
 ) : Parcelable

@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderCatQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.HolderQuestAndAns
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
-import com.fera.kuiz.feat_takeQuiz.model.InterfaceCategory
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
+import com.fera.kuiz.feat_CategoryQuestions.model.InterfaceCategory
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 
-class MainController(application: Application) : AndroidViewModel(application), InterfaceCategory {
+class ControllerMainAct(application: Application) : AndroidViewModel(application), InterfaceCategory {
 
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
@@ -41,6 +41,14 @@ class MainController(application: Application) : AndroidViewModel(application), 
 
     override suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion> {
         return daoCategory.getQuestionList(pkCategoryId)
+    }
+
+    override suspend fun getCategoryIds(): List<Long> {
+        return daoCategory.getCategoryIds()
+    }
+
+    override suspend fun getTotalQuestionsInCategory(pkCategoryId: Long): Int {
+        return daoCategory.getTotalQuestionsInCategory(pkCategoryId)
     }
 
     suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {

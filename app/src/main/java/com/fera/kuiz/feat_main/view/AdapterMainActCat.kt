@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fera.kuiz.databinding.ListItemCategoryBinding
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 
-class AdapterCategoryMain(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceCategoryMain): RecyclerView.Adapter<AdapterCategoryMain.MyViewHolder>() {
+class AdapterMainActCat(private var listCategory: List<TblCategory>, private val context: Context, private val actions: InterfaceCategoryMain): RecyclerView.Adapter<AdapterMainActCat.MyViewHolder>() {
 
     interface InterfaceCategoryMain {
         fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)

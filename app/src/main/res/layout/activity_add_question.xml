@@ -6,84 +6,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feat_CategoryQuestions.view.AddQuestionActivity">
+    tools:context=".feat_AddQuestion.view.AddQuestionActivity">
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/ivBackAddQues"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:padding="5dp"
         android:layout_marginTop="16dp"
+        android:padding="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back"
         app:tint="@color/green_darkest" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/ivSaveEditAddQues"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:padding="5dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:padding="5dp"
+        android:tag="@string/txtSave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_check"
         app:tint="@color/green_darkest" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tvCategoryTitleAddQues"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:maxLines="1"
-        android:textAlignment="center"
         android:text="@string/txtCategory"
+        android:textAlignment="center"
         android:textColor="@color/green_darkest"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintTop_toBottomOf="@+id/ivBackAddQues" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/tvQuestionsCountAddQues"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="20 questions"
-        android:textSize="12sp"
         android:textColor="@color/green_darker"
-        app:layout_constraintEnd_toEndOf="@+id/textView8"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvCategoryTitleAddQues"
+        app:layout_constraintStart_toStartOf="@+id/tvCategoryTitleAddQues"
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryTitleAddQues" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clMultipleChoice"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12">
+        app:layout_constraintTop_toBottomOf="@+id/tvQuestionsCountAddQues">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/edtQuestionTextAddQues"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:padding="7dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_ques_input"
             android:ems="10"
-            android:hint="Question Text"
-            android:inputType="text"
+            android:hint="@string/txtQuestion"
+            android:inputType="textMultiLine"
+            android:maxLines="7"
+            android:padding="7dp"
             android:textAlignment="center"
             android:textColor="@color/green_darkest"
             android:textColorHint="@color/greenish_grey"
@@ -92,12 +93,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMultipleChoiceAddQues"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText">
+            app:layout_constraintTop_toBottomOf="@+id/edtQuestionTextAddQues">
 
             <TextView
                 android:id="@+id/textView13"
@@ -107,23 +110,23 @@
                 android:gravity="center_vertical"
                 android:text="Add Choice"
                 android:textColor="@color/green_darker"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                app:layout_constraintEnd_toStartOf="@+id/imageView11"
-                app:layout_constraintTop_toTopOf="@+id/imageView11" />
+                app:layout_constraintBottom_toBottomOf="@+id/ivAddChoiceAddQues"
+                app:layout_constraintEnd_toStartOf="@+id/ivAddChoiceAddQues"
+                app:layout_constraintTop_toTopOf="@+id/ivAddChoiceAddQues" />
 
             <ImageView
-                android:id="@+id/imageView11"
+                android:id="@+id/ivAddChoiceAddQues"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="13dp"
                 android:layout_marginEnd="16dp"
                 android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/spProvinceInstitution_createAcc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add_fill" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAddOptionsAddQues"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
@@ -131,6 +134,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13"
                 app:layout_constraintVertical_bias="0.0"
@@ -139,40 +143,44 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clTrueOrFalseAddQues"
             android:layout_width="match_parent"
-            android:id="@+id/clTrueOrFalse_addQues"
             android:layout_height="0dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText">
+            app:layout_constraintTop_toBottomOf="@+id/edtQuestionTextAddQues">
 
 
             <RadioGroup
+                android:id="@+id/rgTrueFalseAddQues"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:id="@+id/rbTrueFalse_addQues"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15">
 
                 <RadioButton
+                    android:id="@+id/rbTrueAddQues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="True"
                     android:textColor="@color/green_darker"
-                    android:textStyle="bold"
-                    android:text="True" />
+                    android:textStyle="bold" />
 
                 <RadioButton
+                    android:id="@+id/rbFalseAddQues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:checked="true"
+                    android:padding="10dp"
+                    android:text="False"
                     android:textColor="@color/green_darker"
-                    android:textStyle="bold"
-                    android:layout_marginStart="60dp"
-                    android:text="False" />
+                    android:textStyle="bold" />
 
             </RadioGroup>
 
@@ -182,26 +190,208 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="58dp"
-                android:gravity="center"
                 android:layout_marginEnd="16dp"
-                android:text="Choose the solution"
-                android:textStyle="italic"
+                android:gravity="center"
+                android:text="@string/txtSolution"
                 android:textColor="@color/green_dark"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edtTrueDescAddQues"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/transparent"
+                android:hint="(Optional) Explain why answer is True"
+                android:inputType="textMultiLine"
+                android:maxLines="2"
+                android:padding="7dp"
+                android:textColor="@color/greenish_grey_dark"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/rgTrueFalseAddQues"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/rgTrueFalseAddQues"
+                app:layout_constraintTop_toTopOf="@+id/rgTrueFalseAddQues"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/edtFalseDescAddQues"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/transparent"
+                android:hint="(Optional) Explain why answer is False"
+                android:inputType="textMultiLine"
+                android:maxLines="2"
+                android:padding="7dp"
+                android:textColor="@color/greenish_grey_dark"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/rgTrueFalseAddQues"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/rgTrueFalseAddQues" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Spinner
-            android:id="@+id/spProvinceInstitution_createAcc"
+            android:id="@+id/spQuestionTypeAddQues"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/spinner_style"
-            android:padding="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+            app:layout_constraintTop_toBottomOf="@+id/edtQuestionTextAddQues" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/bgDimAddQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_dim"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clAddChoiceAddQues"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="130dp"
+        android:visibility="gone"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bg_rect_r5_ques"
+        android:backgroundTint="@color/greenish_grey"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivCloseAddChoiceAddQues"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/green_darkest" />
+
+        <EditText
+            android:id="@+id/edtChoiceAddQues"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:gravity="center_horizontal"
+            android:hint="@string/txtChoice"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:padding="7dp"
+            android:textColor="@color/green_darker"
+            android:textColorHint="@color/greenish_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCloseAddChoiceAddQues" />
+
+        <EditText
+            android:id="@+id/edtChoiceDescAddQues"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:gravity="center_horizontal"
+            android:hint="Explain why answer is correct/incorrect"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:padding="7dp"
+            android:textColor="@color/green_darker"
+            android:textColorHint="@color/greenish_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtChoiceAddQues" />
+
+        <RadioGroup
+            android:id="@+id/rgCorrectIncorrectAddChoiceAddQues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtChoiceDescAddQues">
+
+            <RadioButton
+                android:id="@+id/rbCorrectAddChoiceAddQues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/green"
+                android:padding="15dp"
+                android:text="Correct"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/rbIncorrectAddChoiceAddQues"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="40dp"
+                android:buttonTint="@color/red"
+                android:checked="true"
+                android:text="Incorrect"
+                android:textSize="12sp" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgCorrectIncorrectAddChoiceAddQues">
+
+            <Button
+                android:id="@+id/btnAddChoiceAddQues"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="@string/txtAdd" />
+
+            <Button
+                android:id="@+id/btnCancelChoiceAddQues"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/orange"
+                android:text="@string/txtCancel" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

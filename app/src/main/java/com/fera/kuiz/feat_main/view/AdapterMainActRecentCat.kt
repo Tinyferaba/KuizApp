@@ -1,21 +1,13 @@
 package com.fera.kuiz.feat_main.view
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.fera.kuiz.BuildConfig
-import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.databinding.ListItemRecentCatBinding
-import com.fera.kuiz.feat_takeQuiz.model.TblCategory
-import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
 
-class AdapterRecentCat(private var listRecentCat: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterRecentCat): RecyclerView.Adapter<AdapterRecentCat.MyViewHolder>() {
+class AdapterMainActRecentCat(private var listRecentCat: List<TblCategory>, private val context: Context, private val actions: InterfaceAdapterRecentCat): RecyclerView.Adapter<AdapterMainActRecentCat.MyViewHolder>() {
 
     interface InterfaceAdapterRecentCat {
         fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)

@@ -1,20 +1,16 @@
 package com.fera.kuiz.feat_CategoryQuestions.view
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
-import com.fera.kuiz.common.util.Const
 import com.fera.kuiz.common.util.EnumQuestionType
 import com.fera.kuiz.databinding.ListItemQuestionBinding
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
-import com.fera.kuiz.feat_takeQuiz.view.TakeQuizActivity
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 
-class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val context: Context, private val actions: InterfaceAdapterQuestion) : RecyclerView.Adapter<AdapterQuestion.MyViewHolder>() {
+class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private val context: Context, private val actions: InterfaceAdapterQuestion) : RecyclerView.Adapter<AdapterCategoryAct.MyViewHolder>() {
 
     interface InterfaceAdapterQuestion {
         fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)
@@ -40,7 +36,7 @@ class AdapterQuestion(private var listQuestion: List<TblQuestion>, private val c
                 }
                 EnumQuestionType.TRUE_OR_FALSE.type -> {
                     Glide.with(context)
-                        .load(R.drawable.ic_multi_choice)
+                        .load(R.drawable.ic_true_or_false)
                         .into(ivQuestionTypeLiCat)
                 }
             }

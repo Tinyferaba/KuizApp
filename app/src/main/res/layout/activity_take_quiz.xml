@@ -44,9 +44,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="18dp"
                 android:gravity="center"
-                android:text="@string/demoQuestion"
+                android:hint="@string/txtQuestion"
+                android:textColorHint="@color/greenish_grey"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -167,7 +168,8 @@
         android:layout_alignParentTop="true"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:text="@string/txtCategory"
+        android:hint="@string/txtCategory"
+        android:textColorHint="@color/greenish_grey"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivBackTakeQues"
@@ -182,7 +184,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
-        android:text="3 of 23"
+        android:hint="@string/txtQuestion"
+        android:textColorHint="@color/greenish_grey"
         android:textColor="@color/greenish_grey"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -199,6 +202,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
+
+    <ImageView
+        android:id="@+id/ivDeleteQuestTakeQues"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete" />
 
 
     <ImageView

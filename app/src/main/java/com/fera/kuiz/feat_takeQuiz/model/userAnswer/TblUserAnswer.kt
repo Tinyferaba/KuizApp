@@ -1,15 +1,13 @@
-package com.fera.kuiz.feat_CategoryQuestions.model.userAnswer
+package com.fera.kuiz.feat_takeQuiz.model.userAnswer
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.ForeignKey.Companion.NO_ACTION
 import androidx.room.Index
-import androidx.room.PrimaryKey
 import com.fera.kuiz.common.util.DatabaseProperties
-import com.fera.kuiz.feat_CategoryQuestions.model.answer.TblAnswer
-import com.fera.kuiz.feat_CategoryQuestions.model.question.TblQuestion
-import com.fera.kuiz.feat_userAuth.model.TblUserRegistration
+import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 
 @Entity(tableName = DatabaseProperties.TBL_USER_ANSWER,
     foreignKeys = [

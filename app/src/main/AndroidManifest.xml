@@ -15,7 +15,7 @@
             android:name=".feat_CategoryQuestions.view.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".feat_CategoryQuestions.view.AddQuestionActivity"
+            android:name=".feat_AddQuestion.view.AddQuestionActivity"
             android:exported="false" />
         <activity
             android:name=".feat_takeQuiz.view.TakeQuizActivity"
