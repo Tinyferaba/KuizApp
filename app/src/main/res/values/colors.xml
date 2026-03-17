@@ -12,6 +12,8 @@
     <color name="green_darker">#016815</color>
     <color name="green_darkest">#013A0D</color>
     <color name="greenish_grey">#CAE2CE</color>
+    <color name="stroke_green">#cae2ce</color>
+    <color name="stroke_focused_green">#00ff2b</color>
     <color name="greenish_grey_dark">#718E76</color>
     <color name="orange">#D18D06</color>
     <color name="bgDim">#00701366</color>

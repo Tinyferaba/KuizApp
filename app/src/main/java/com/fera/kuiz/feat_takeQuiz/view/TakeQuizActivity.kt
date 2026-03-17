@@ -148,6 +148,12 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
 
         //Note: Called only once to load the first question
         loadAndSetNextQuestion(currentQuestionPosition)
+
+        lifecycleScope.launch {
+            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuesAndAns.tblCategory.pkCategoryId, 1).let { totalCorrectAnswers = it }
+            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuesAndAns.tblCategory.pkCategoryId, 0).let { totalWrongAnswers = it }
+            controllerTakeQuiz.getTotalQAnswered(holderCatQuesAndAns.tblCategory.pkCategoryId).let { totalQAnswered = it }
+        }
     }
 
 
@@ -174,7 +180,11 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private fun loadAndSetNextQuestion(questionPos: Int) {
         Log.d(TAG, "loadAndSetNextQuestion: Position: $questionPos")
         if (questionPos == holderCatQuesAndAns.listHolderQuestAndAns.size) {
-            toastShort("Hurray! Quiz Completed!")
+            if (holderCatQuesAndAns.listHolderQuestAndAns.isEmpty()){
+                toastLong("No Questions")
+            } else {
+                toastShort("Hurray! Quiz Completed!")
+            }
             currentQuestionPosition--
             onBackPressedDispatcher.onBackPressed()
         } else if (questionPos < 0) {
@@ -212,6 +222,9 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     }
 
     fun updateCategoryProperties() {
+//        lastQTakenQuestionId = controllerTakeQuiz.getLastQTakenQuestionId(holderCatQuesAndAns.tblCategory.pkCategoryId).value ?: lastQTakenQuestionId
+//        lastQTakenQuestionNo = controllerTakeQuiz.getLastQTakenQuestionNo(holderCatQuesAndAns.tblCategory.pkCategoryId).value ?: lastQTakenQuestionNo
+
         holderCatQuesAndAns.tblCategory.totalCorrectAnswers = totalCorrectAnswers
         holderCatQuesAndAns.tblCategory.totalWrongAnswers = totalWrongAnswers
         holderCatQuesAndAns.tblCategory.totalQAnswered = totalQAnswered
@@ -224,16 +237,22 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
 
 
     override fun saveUserAnswer(tblUserAnswer: TblUserAnswer) {
+
         if (tblUserAnswer.isCorrect) {
             totalCorrectAnswers++
         } else {
             totalWrongAnswers++
         }
+
         totalQAnswered++
+
         lastQTakenQuestionId = tblUserAnswer.fkUserAnswer_questionId
         lastQTakenQuestionNo = holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.questionNo
 
         controllerTakeQuiz.saveUserAnswer(tblUserAnswer)
+
+        holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.isTaken = true       // Question is taken so it must be updated
+        controllerTakeQuiz.updateQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion)
     }
 
     override fun updateCategoryProperties(tblCategory: TblCategory) {

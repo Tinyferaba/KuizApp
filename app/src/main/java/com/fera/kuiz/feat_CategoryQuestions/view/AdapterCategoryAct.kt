@@ -2,6 +2,7 @@ package com.fera.kuiz.feat_CategoryQuestions.view
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,6 +15,7 @@ class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private va
 
     interface InterfaceAdapterQuestion {
         fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int)
+        fun editQuestion(tblQuestion: TblQuestion)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -28,6 +30,12 @@ class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private va
             tvQuestionNoLiCat.text = tblQuestion.questionNo.toString()
             tvQuestionLiCat.text = tblQuestion.question
 
+            if (tblQuestion.isTaken)
+                ivTakeStatusLiCat.visibility = View.VISIBLE
+            else
+                ivTakeStatusLiCat.visibility = View.GONE
+
+
             when(tblQuestion.questionType){
                 EnumQuestionType.MULTIPLE_CHOICE.type -> {
                     Glide.with(context)
@@ -39,6 +47,10 @@ class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private va
                         .load(R.drawable.ic_true_or_false)
                         .into(ivQuestionTypeLiCat)
                 }
+            }
+
+            ivEditLiCat.setOnClickListener {
+                actions.editQuestion(tblQuestion)
             }
 
             root.setOnClickListener {

@@ -51,6 +51,22 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
         return daoCategory.getTotalQuestionsInCategory(pkCategoryId)
     }
 
+    override suspend fun getTotalQAnswered(pkCategoryId: Long): Int {
+        return daoCategory.getTotalQAnswered(pkCategoryId)
+    }
+
+    override suspend fun getTotalCorrectIncorrectAnswers(pkCategoryId: Long, correctOrIncorrect: Int): Int {
+        return daoCategory.getTotalCorrectIncorrectAnswers(pkCategoryId, correctOrIncorrect)
+    }
+
+    override suspend fun getLastQTakenQuestionId(pkCategoryId: Long): Long {
+        return daoCategory.getLastQTakenQuestionId(pkCategoryId)
+    }
+
+    override suspend fun getLastQTakenQuestionNo(pkCategoryId: Long): Int {
+        return daoCategory.getLastQTakenQuestionNo(pkCategoryId)
+    }
+
     suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
         val listHolderQuestAndAns = arrayListOf<HolderQuestAndAns>()
 

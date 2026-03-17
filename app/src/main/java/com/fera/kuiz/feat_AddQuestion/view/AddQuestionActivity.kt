@@ -1,9 +1,11 @@
 package com.fera.kuiz.feat_AddQuestion.view
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -65,6 +67,45 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
 
         initViews()
         addActionListeners()
+        addAnimation()
+    }
+
+    private fun addAnimation() {
+        b.edtQuestionTextAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                v.setBackgroundResource(R.drawable.bg_ques_input_focused)
+            } else {
+                v.setBackgroundResource(R.drawable.bg_ques_input)
+            }
+        }
+        b.edtTrueDescAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                v.setBackgroundResource(R.drawable.bg_ques_input_focused)
+            } else {
+                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            }
+        }
+        b.edtFalseDescAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                v.setBackgroundResource(R.drawable.bg_ques_input_focused)
+            } else {
+                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            }
+        }
+        b.edtChoiceAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                v.setBackgroundResource(R.drawable.bg_ques_input_focused)
+            } else {
+                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            }
+        }
+        b.edtChoiceDescAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                v.setBackgroundResource(R.drawable.bg_ques_input_focused)
+            } else {
+                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+            }
+        }
     }
 
 
@@ -87,13 +128,12 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
 
                 when (b.spQuestionTypeAddQues.selectedItem){
                     EnumQuestionType.MULTIPLE_CHOICE.type -> {
-                        b.clMultipleChoiceAddQues.visibility = View.VISIBLE
-                        b.clTrueOrFalseAddQues.visibility = View.GONE
+                        showMultipleChoicePanel()
+
                         tblQuestion.questionType = EnumQuestionType.MULTIPLE_CHOICE.type
                     }
                     EnumQuestionType.TRUE_OR_FALSE.type -> {
-                        b.clMultipleChoiceAddQues.visibility = View.GONE
-                        b.clTrueOrFalseAddQues.visibility = View.VISIBLE
+                        showTrueFalsePanel()
                         tblQuestion.questionType = EnumQuestionType.TRUE_OR_FALSE.type
                     }
                 }
@@ -105,32 +145,27 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
             }
         }
         b.ivAddChoiceAddQues.setOnClickListener {
-            b.bgDimAddQuestion.visibility = View.VISIBLE
-            b.clAddChoiceAddQues.visibility = View.VISIBLE
+            showAddChoicePanel()
             showKeyboard(this, b.edtChoiceAddQues)
         }
         b.ivCloseAddChoiceAddQues.setOnClickListener {
             b.edtChoiceAddQues.setText("")
-            b.bgDimAddQuestion.visibility = View.GONE
-            b.clAddChoiceAddQues.visibility = View.GONE
+            hideAddChoicePanel()
             hideKeyboard(this, b.edtChoiceAddQues)
         }
         b.btnCancelChoiceAddQues.setOnClickListener {
             b.edtChoiceAddQues.setText("")
-            b.bgDimAddQuestion.visibility = View.GONE
-            b.clAddChoiceAddQues.visibility = View.GONE
+            hideAddChoicePanel()
             hideKeyboard(this, b.edtChoiceAddQues)
         }
         b.btnAddChoiceAddQues.setOnClickListener {
             hideKeyboard(this, b.edtQuestionTextAddQues)
-            b.bgDimAddQuestion.visibility = View.GONE
-            b.clAddChoiceAddQues.visibility = View.GONE
+            hideAddChoicePanel()
             addChoiceToList()
         }
         b.bgDimAddQuestion.setOnClickListener {
             hideKeyboard(this, b.edtQuestionTextAddQues)
-            b.bgDimAddQuestion.visibility = View.GONE
-            b.clAddChoiceAddQues.visibility = View.GONE
+            hideAddChoicePanel()
         }
     }
 
@@ -163,8 +198,7 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
                 }
 
                 val list = arrayListOf<TblAnswer>(tblAnswerT, tblAnswerF)
-                listAnswerTF = list
-                listAnswerTF
+                list
             }
             else -> { emptyList() }
         }
@@ -185,7 +219,11 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
         val listAnswers = getAnswers()
 
         tblQuestion.fkQuestion_categoryId = tblCategory!!.pkCategoryId
-        tblQuestion.questionNo = tblCategory!!.totalQuestions + 1
+        tblQuestion.questionNo.let {
+            if (it == -1){
+                tblQuestion.questionNo = tblCategory!!.totalQuestions + 1
+            }
+        }
         tblQuestion.question = b.edtQuestionTextAddQues.text.toString().trim()
 
         tblCategory!!.totalQuestions += 1
@@ -261,6 +299,37 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
                 tblCategory?.let { controllerAddQuestAct.updateCategory(it) }
             }
         }
+
+
+        if (intent.getBooleanExtra(Const.EDIT, false)){
+            b.edtQuestionTextAddQues.setText(tblQuestion.question)
+            when(tblQuestion.questionType){
+                EnumQuestionType.MULTIPLE_CHOICE.type -> {
+                    adapterAddQuestAct.updateList(listAnswerMC)
+                    showMultipleChoicePanel()
+                }
+                EnumQuestionType.TRUE_OR_FALSE.type -> {
+                    val answerT: TblAnswer
+                    val answerF: TblAnswer
+                    if (listAnswerTF[0].answer == ContextCompat.getString(this, R.string.txtTrue)){
+                        answerT = listAnswerTF[0]
+                        answerF = listAnswerTF[1]
+                    } else {
+                        answerF = listAnswerTF[0]
+                        answerT = listAnswerTF[1]
+                    }
+
+                    b.edtTrueDescAddQues.setText(answerT.description)
+                    b.edtFalseDescAddQues.setText(answerF.description)
+
+                    b.rbTrueAddQues.isChecked = answerT.isCorrect
+                    b.rbFalseAddQues.isChecked = answerF.isCorrect
+
+                    showTrueFalsePanel()
+                }
+            }
+        }
+
     }
 
     private fun setMainData() {
@@ -272,16 +341,74 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
 
     private fun loadParcelData() {
         val category = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
+        val edit = intent.getBooleanExtra(Const.EDIT, false)
+
         if (category == null) {
             toastLong("Error Loading Data")
             return
         }
+
+
+        if (edit){
+            val question = intent.getParcelableExtra<TblQuestion>(Const.QUESTION)
+            val answers = intent.getParcelableArrayListExtra<TblAnswer>(Const.ANSWER_LIST)
+
+            if (question == null || answers == null){
+                toastLong("Error Loading Answers")
+                return
+            }
+
+            tblQuestion = question
+            when (question.questionType){
+                EnumQuestionType.MULTIPLE_CHOICE.type -> { listAnswerMC = answers }
+                EnumQuestionType.TRUE_OR_FALSE.type -> { listAnswerMC = answers }
+            }
+        }
+
         tblCategory = category
+    }
+
+    private fun showTrueFalsePanel() {
+        b.clTrueOrFalseAddQues.visibility = View.VISIBLE
+        hideMultipleChoicePanel()
+    }
+
+    private fun hideTrueFalsePanel() {
+        b.clTrueOrFalseAddQues.visibility = View.GONE
+    }
+
+    private fun showMultipleChoicePanel() {
+        b.clMultipleChoiceAddQues.visibility = View.VISIBLE
+        hideTrueFalsePanel()
+    }
+
+    private fun hideMultipleChoicePanel() {
+        b.clMultipleChoiceAddQues.visibility = View.GONE
+    }
+
+    private fun showAddChoicePanel(){
+        b.bgDimAddQuestion.visibility = View.VISIBLE
+        b.clAddChoiceAddQues.visibility = View.VISIBLE
+    }
+
+    private fun hideAddChoicePanel(){
+        b.bgDimAddQuestion.visibility = View.GONE
+        b.clAddChoiceAddQues.visibility = View.GONE
     }
 
     override fun deleteAnswer(pkAnswerId: Long) {
         lifecycleScope.launch {
             controllerAddQuestAct.deleteAnswer(pkAnswerId)
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        currentFocus?.let { view ->
+            if (view is EditText){
+                view.clearFocus()
+                hideKeyboard(this, view)
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
+import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
@@ -14,6 +15,10 @@ class ControllerCategoryAct(application: Application): AndroidViewModel(applicat
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
     private val daoAnswer = KuizDb.getDatabase(application).daoAnswer()
+
+    suspend fun getAnswers(pkQuestionId: Long): List<TblAnswer> {
+        return daoAnswer.getAnswers(pkQuestionId)
+    }
 
     override suspend fun getQuestion(pkQuestionId: Long): TblQuestion {
         return daoQuestion.getQuestion(pkQuestionId)

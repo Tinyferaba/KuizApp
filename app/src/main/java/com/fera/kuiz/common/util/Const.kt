@@ -1,6 +1,10 @@
 package com.fera.kuiz.common.util
 
 object Const {
+
+    const val EDIT = "edit"
+    const val ANSWER_LIST = "answer_list"
+    const val QUESTION = "question"
     const val ACTIVITY_KEY = "activity_key"
 
     const val CATEGORY = "category"

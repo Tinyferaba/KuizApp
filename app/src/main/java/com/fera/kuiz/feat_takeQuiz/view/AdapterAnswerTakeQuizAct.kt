@@ -12,6 +12,7 @@ import com.fera.kuiz.R
 import com.fera.kuiz.common.util.GlobalProperties
 import com.fera.kuiz.databinding.ListItemChoiceTakeQBinding
 import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
 import java.util.Date
 

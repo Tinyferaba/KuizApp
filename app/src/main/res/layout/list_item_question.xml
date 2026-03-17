@@ -10,8 +10,15 @@
     android:background="@drawable/bg_rect_r5_ques"
     android:layout_height="46dp">
 
-<!--    todo: Get icon for TF questions -->
-
+    <ImageView
+        android:id="@+id/ivQuestionTypeLiCat"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_multi_choice"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvQuestionNoLiCat"
@@ -33,25 +40,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="8dp"
-        android:maxLines="1"
+        android:layout_marginEnd="4dp"
         android:hint="@string/tvQuestion"
-        android:textColorHint="@color/greenish_grey"
+        android:maxLines="1"
         android:textColor="@color/white"
+        android:textColorHint="@color/greenish_grey"
         app:layout_constraintBottom_toBottomOf="@+id/tvQuestionNoLiCat"
-        app:layout_constraintEnd_toStartOf="@+id/ivEditLiCat"
+        app:layout_constraintEnd_toStartOf="@+id/ivTakeStatusLiCat"
         app:layout_constraintStart_toEndOf="@+id/tvQuestionNoLiCat"
         app:layout_constraintTop_toTopOf="@+id/tvQuestionNoLiCat" />
-
-    <ImageView
-        android:id="@+id/ivQuestionTypeLiCat"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/ic_multi_choice"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivEditLiCat"
@@ -62,4 +59,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivTakeStatusLiCat"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="gone"
+        android:background="@drawable/bg_rnd"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivEditLiCat"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/green" />
 </androidx.constraintlayout.widget.ConstraintLayout>

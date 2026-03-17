@@ -29,7 +29,7 @@ data class TblQuestion(
     @PrimaryKey(autoGenerate = false)
     val pkQuestionId: Long,
     var fkQuestion_categoryId: Long = 0L,
-    var questionNo: Int = 0,
+    var questionNo: Int = -1,
     var questionType: String = "",
     var question: String = "",
     var difficulty: Int = 1,

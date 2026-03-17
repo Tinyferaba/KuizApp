@@ -47,4 +47,41 @@ interface DaoCategory : InterfaceCategory {
             left join tblQuestion b on a.pkCategoryId = fkQuestion_categoryId
             where fkQuestion_categoryId = :pkCategoryId""")
     override suspend fun getTotalQuestionsInCategory(pkCategoryId: Long): Int
+
+    @Query("""
+            select count(ua.fkUserAnswer_questionId) from tblcategory c 
+                left join tblQuestion q on c.pkCategoryId = q.fkQuestion_categoryId
+                left join tbluseranswer ua on q.pkQuestionId = ua.fkuseranswer_questionId
+            where c.pkCategoryId = :pkCategoryId
+            group by c.pkCategoryId
+            """)
+    override suspend fun getTotalQAnswered(pkCategoryId: Long): Int
+
+    @Query("""
+            select count(ua.fkuseranswer_questionId) from tblcategory c 
+                left join tblQuestion q on c.pkCategoryId = q.fkQuestion_categoryId
+                left join tbluseranswer ua on q.pkQuestionId = ua.fkuseranswer_questionId
+            where c.pkCategoryId = :pkCategoryId and ua.isCorrect = :correctOrIncorrect
+            group by c.pkCategoryId
+            """)
+    override suspend fun getTotalCorrectIncorrectAnswers(pkCategoryId: Long, correctOrIncorrect: Int): Int
+
+    @Query("""
+        select q.pkQuestionId from tblcategory c 
+            left join tblQuestion q on c.pkCategoryId = q.fkQuestion_categoryId
+            left join tbluseranswer ua on q.pkQuestionId = ua.fkuseranswer_questionId
+        where c.pkCategoryId = :pkCategoryId
+        order by ua.qStartTakenDate desc limit 1
+    """)
+    override suspend fun getLastQTakenQuestionId(pkCategoryId: Long): Long
+
+    @Query("""
+        select q.questionNo from tblcategory c 
+            left join tblQuestion q on c.pkCategoryId = q.fkQuestion_categoryId
+            left join tbluseranswer ua on q.pkQuestionId = ua.fkuseranswer_questionId
+        where c.pkCategoryId = :pkCategoryId
+        order by ua.qStartTakenDate desc limit 1
+    """)
+    override suspend fun getLastQTakenQuestionNo(pkCategoryId: Long): Int
+
 }

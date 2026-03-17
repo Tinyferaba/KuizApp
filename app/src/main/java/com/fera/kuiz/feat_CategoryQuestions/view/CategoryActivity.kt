@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.fera.kuiz.BuildConfig
@@ -166,6 +167,24 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
                 startActivity(intent)
             }
         }
+    }
+
+    override fun editQuestion(tblQuestion: TblQuestion) {
+        lifecycleScope.launch {
+            val listAnswers = controllerCategory.getAnswers(tblQuestion.pkQuestionId)
+
+            withContext(Dispatchers.Main){
+                val intent = Intent(this@CategoryActivity, AddQuestionActivity::class.java)
+                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+                intent.putExtra(Const.QUESTION, tblQuestion)
+                intent.putExtra(Const.CATEGORY, tblCategory)
+                intent.putExtra(Const.EDIT, true)
+                intent.putParcelableArrayListExtra(Const.ANSWER_LIST, ArrayList(listAnswers))
+                startActivity(intent)
+            }
+        }
+
+
     }
 
 }

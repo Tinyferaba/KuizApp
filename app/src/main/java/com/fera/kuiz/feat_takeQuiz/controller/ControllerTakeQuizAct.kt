@@ -2,7 +2,9 @@ package com.fera.kuiz.feat_takeQuiz.controller
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
+import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.InterfaceUserAnswer
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
 import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
@@ -17,6 +19,32 @@ class ControllerTakeQuizAct(application: Application): AndroidViewModel(applicat
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
 
+
+    suspend fun getTotalQAnswered(pkCategoryId: Long): Int {
+        return daoCategory.getTotalQAnswered(pkCategoryId)
+    }
+
+    suspend fun getTotalCorrectIncorrectAnswers(pkCategoryId: Long, correctOrIncorrect: Int): Int{
+        return daoCategory.getTotalCorrectIncorrectAnswers(pkCategoryId, correctOrIncorrect)
+    }
+
+    suspend fun getLastQTakenQuestionId(pkCategoryId: Long): Long {
+        return daoCategory.getLastQTakenQuestionId(pkCategoryId)
+    }
+
+    suspend fun getLastQTakenQuestionNo(pkCategoryId: Long): Int{
+        return daoCategory.getLastQTakenQuestionNo(pkCategoryId)
+    }
+
+    suspend fun deleteQuestion(pkQuestionId: Long){
+        daoQuestion.deleteQuestion(pkQuestionId)
+    }
+
+    fun updateQuestion(tblQuestion: TblQuestion) {
+        CoroutineScope(Dispatchers.IO).launch {
+            daoQuestion.updateQuestion(tblQuestion)
+        }
+    }
     override suspend fun insertUserAnswer(tblUserAnswer: TblUserAnswer): Long {
         return daoUserAnswer.insertUserAnswer(tblUserAnswer)
     }
@@ -49,7 +77,5 @@ class ControllerTakeQuizAct(application: Application): AndroidViewModel(applicat
         }
     }
 
-    suspend fun deleteQuestion(pkQuestionId: Long){
-        daoQuestion.deleteQuestion(pkQuestionId)
-    }
+
 }

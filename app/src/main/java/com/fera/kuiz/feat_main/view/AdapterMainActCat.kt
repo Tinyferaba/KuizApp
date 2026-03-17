@@ -49,7 +49,7 @@ class AdapterMainActCat(private var listCategory: List<TblCategory>, private val
             }
 
             root.setOnClickListener {
-                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, false, 0)
+                actions.gotoTakeQuizActivity(tblCategory.pkCategoryId, false, tblCategory.lastQuestionTakenNo)
             }
         }
     }
