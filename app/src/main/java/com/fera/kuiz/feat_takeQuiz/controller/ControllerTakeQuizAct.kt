@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.InterfaceUserAnswer
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
@@ -18,7 +20,21 @@ class ControllerTakeQuizAct(application: Application): AndroidViewModel(applicat
     private val daoUserAnswer = KuizDb.getDatabase(application).daoUserAnswer()
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
+    private val daoAnswer = KuizDb.getDatabase(application).daoAnswer()
 
+    suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
+        val listHolderQuestAndAns = arrayListOf<HolderQuestAndAns>()
+
+        val tblCategory = daoCategory.getCategory(pkCategoryId)
+        val listQuestions = daoQuestion.getQuestions(pkCategoryId)
+
+        listQuestions.forEach { tblQuestion ->
+            val listAnswers = daoAnswer.getAnswers(tblQuestion.pkQuestionId)
+            listHolderQuestAndAns.add(HolderQuestAndAns(tblQuestion, ArrayList(listAnswers)))
+        }
+
+        return HolderCatQuestAndAns(tblCategory, listHolderQuestAndAns)
+    }
 
     suspend fun getTotalQAnswered(pkCategoryId: Long): Int {
         return daoCategory.getTotalQAnswered(pkCategoryId)

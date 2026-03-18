@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
 import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAnsFirst
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_CategoryQuestions.model.InterfaceCategory
@@ -16,6 +17,14 @@ class ControllerCategoryAct(application: Application): AndroidViewModel(applicat
     private val daoQuestion = KuizDb.getDatabase(application).daoQuestion()
     private val daoCategory = KuizDb.getDatabase(application).daoCategory()
     private val daoAnswer = KuizDb.getDatabase(application).daoAnswer()
+
+    suspend fun getHolderCatQuestAndAnsFirst(pkCategoryId: Long, questionNo: Int): HolderCatQuestAndAnsFirst {
+        val tblCategory = daoCategory.getCategory(pkCategoryId)
+        val tblQuestion = daoQuestion.getQuestionByCatIdByNo(pkCategoryId, questionNo)
+        val listAnswers = daoAnswer.getAnswers(tblQuestion.pkQuestionId)
+
+        return HolderCatQuestAndAnsFirst(tblCategory, tblQuestion, ArrayList(listAnswers))
+    }
 
     suspend fun getAnswers(pkQuestionId: Long): List<TblAnswer> {
         return daoAnswer.getAnswers(pkQuestionId)

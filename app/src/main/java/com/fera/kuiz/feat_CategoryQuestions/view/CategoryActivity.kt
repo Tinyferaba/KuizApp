@@ -30,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapterQuestion {
     private val TAG = "CategoryActivity"
@@ -181,7 +182,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
                 val value = it.getAnimatedValue() as Int
                 val percentage = 100 * (value / maxProgress.toDouble())
                 b.pbProgressCat.progress = value
-                b.tvProgressPercent.text = "${percentage.toInt()} %"
+                b.tvProgressPercent.text = "${percentage.roundToInt()} %"
             }
             animatorProgress.start()
 
@@ -228,9 +229,27 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
             window.navigationBarColor = getColor(R.color.transparent)
     }
 
+//    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val holderCatQuestAndAns = controllerCategory.getHolderCatQuestAndAns(pkCategoryId)
+//
+//            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
+//
+//            withContext(Dispatchers.Main){
+//                val intent = Intent(this@CategoryActivity, TakeQuizActivity::class.java)
+//                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+//                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+//                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
+//                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+//                startActivity(intent)
+//            }
+//        }
+//    }
+
     override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val holderCatQuestAndAns = controllerCategory.getHolderCatQuestAndAns(pkCategoryId)
+
+            val holderCatQuestAndAns = controllerCategory.getHolderCatQuestAndAnsFirst(pkCategoryId, questionNo)
 
             Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
 
@@ -239,7 +258,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
                 intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
-                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+                intent.putExtra(Const.HolderCatQuestAndAnsFirst, holderCatQuestAndAns)
                 startActivity(intent)
             }
         }

@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fera.kuiz.BuildConfig
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecent
             listRecentCat = it
         }
 
-        adapterMainActCat = AdapterMainActCat(listCategory, this, this)
+        adapterMainActCat = AdapterMainActCat(listCategory, this, this, this)
         b.rvCategory.layoutManager = LinearLayoutManager(this)
         b.rvCategory.adapter = adapterMainActCat
 
@@ -150,24 +151,24 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecent
         }
     }
 
+//    override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAns(pkCategoryId)
+//
+//            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
+//
+//            withContext(Dispatchers.Main){
+//                val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
+//                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+//                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+//                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
+//                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+//                startActivity(intent)
+//            }
+//        }
+//    }
+
     override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAns(pkCategoryId)
-
-            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
-
-            withContext(Dispatchers.Main){
-                val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
-                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
-                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
-                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
-                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
-                startActivity(intent)
-            }
-        }
-    }
-
-    fun gotoTakeQuizActivityFirst(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAnsFirst(pkCategoryId, questionNo)
@@ -179,7 +180,7 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecent
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
                 intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
-                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+                intent.putExtra(Const.HolderCatQuestAndAnsFirst, holderCatQuestAndAns)
                 startActivity(intent)
             }
         }

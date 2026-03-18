@@ -46,6 +46,7 @@ interface DaoQuestion : InterfaceQuestion, InterfaceCatQuestion {
         from tblQuestion q 
             left join tblCategory c on q.fkQuestion_categoryId = c.pkCategoryId
         where pkCategoryId = :pkCategoryId and questionNo = :questionNo
+        order by q.questionNo asc
     """)
     override suspend fun getQuestionByCatIdByNo(pkCategoryId: Long, questionNo: Int): TblQuestion
 }

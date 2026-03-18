@@ -43,6 +43,10 @@ class ControllerAddQuestAct(application: Application): AndroidViewModel(applicat
         return daoQuestion.getQuestions(pkCategoryId)
     }
 
+    override suspend fun getQuestionByCatIdByNo(pkCategoryId: Long, questionNo: Int): TblQuestion {
+        return daoQuestion.getQuestionByCatIdByNo(pkCategoryId, questionNo)
+    }
+
     override suspend fun insertAnswer(tblAnswer: TblAnswer): Long {
         return daoAnswer.insertAnswer(tblAnswer)
     }

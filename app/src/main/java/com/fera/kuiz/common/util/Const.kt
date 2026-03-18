@@ -11,6 +11,7 @@ object Const {
     const val CATEGORY_lastQuestionTakenNo = "lastQuestionTakenNo"
     const val CONTINUE_QUESTION = "continueQuestion"
     const val CONTINUE_QUESTION_NO = "continueQuestionNo"
+    const val HolderCatQuestAndAnsFirst = "HolderCatQuestAndAnsFirst"
 
     const val QUESTION_LIST = "questionList"
 

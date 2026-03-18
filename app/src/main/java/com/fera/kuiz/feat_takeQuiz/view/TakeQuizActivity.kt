@@ -21,6 +21,7 @@ import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.common.util.toastShort
 import com.fera.kuiz.databinding.ActivityTakeQuizBinding
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAnsFirst
 import com.fera.kuiz.feat_takeQuiz.model.userAnswer.TblUserAnswer
 import com.fera.kuiz.feat_takeQuiz.controller.ControllerTakeQuizAct
 import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
@@ -52,6 +53,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
 
     private lateinit var adapterAnswer: AdapterAnswerTakeQuizAct
     private lateinit var holderCatQuesAndAns: HolderCatQuestAndAns
+    private lateinit var holderCatQuestAndAnsFirst: HolderCatQuestAndAnsFirst
 
     private lateinit var controllerTakeQuiz: ControllerTakeQuizAct
 
@@ -107,7 +109,31 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
                 controllerTakeQuiz.deleteQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.pkQuestionId)
             }
         }
+        b.sbDifficultyLevelTakeQues.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val difficulty = progress + 1 // Converts 0-9 to 1-10. SeekBar takes 0 as 1
 
+                b.tvDifficultyDescTakeQues.text = "Difficulty: $difficulty"
+                when (difficulty) {
+                    in 0..3 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+                    }
+                    in 4..7 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+                    }
+                    in 8..10 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+                    }
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
         b.ivNextTakeQues.setOnClickListener {
             if (tblUserAnswerSelected != null) {
                 tblUserAnswerSelected?.let {
@@ -117,7 +143,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
                 tblUserAnswerSelected = null
 
                 currentQuestionPosition++
-                loadAndSetNextQuestion(currentQuestionPosition)
+                loadAndSetNextQuestion(questionPos = currentQuestionPosition)
             } else {
                 toastLong("Choice Not Selected")
             }
@@ -137,7 +163,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
 
         b.ivPreviousTakeQues.setOnClickListener {
             currentQuestionPosition--
-            loadAndSetNextQuestion(currentQuestionPosition)
+            loadAndSetNextQuestion(questionPos = currentQuestionPosition)
         }
 
     }
@@ -145,57 +171,39 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private fun initViews() {
         controllerTakeQuiz = ViewModelProvider(this)[ControllerTakeQuizAct::class.java]
 
+        lifecycleScope.launch {
+            holderCatQuesAndAns = controllerTakeQuiz.getHolderCatQuestAndAns(holderCatQuestAndAnsFirst.tblCategory.pkCategoryId)
+        }
+
         adapterAnswer = AdapterAnswerTakeQuizAct(emptyList(), this, this)
         b.rvChoiceTakeQues.layoutManager = LinearLayoutManager(this)
         b.rvChoiceTakeQues.adapter = adapterAnswer
 
-        b.sbDifficultyLevelTakeQues.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val difficulty = progress + 1 // Converts 0-9 to 1-10. SeekBar takes 0 as 1
-
-                b.tvDifficultyDescTakeQues.text = "Difficulty: $difficulty"
-                when (difficulty) {
-                    in 1..3 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
-                    }
-                    in 4..7 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
-                    }
-                    in 8..10 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
-                    }
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-
         //Note: Called only once to load the first question
-        loadAndSetNextQuestion(currentQuestionPosition)
+        loadAndSetNextQuestion(true, currentQuestionPosition-1)
 
         lifecycleScope.launch {
-            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuesAndAns.tblCategory.pkCategoryId, 1).let { totalCorrectAnswers = it }
-            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuesAndAns.tblCategory.pkCategoryId, 0).let { totalWrongAnswers = it }
-            controllerTakeQuiz.getTotalQAnswered(holderCatQuesAndAns.tblCategory.pkCategoryId).let { totalQAnswered = it }
+            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuestAndAnsFirst.tblCategory.pkCategoryId, 1).let { totalCorrectAnswers = it }
+            controllerTakeQuiz.getTotalCorrectIncorrectAnswers(holderCatQuestAndAnsFirst.tblCategory.pkCategoryId, 0).let { totalWrongAnswers = it }
+            controllerTakeQuiz.getTotalQAnswered(holderCatQuestAndAnsFirst.tblCategory.pkCategoryId).let { totalQAnswered = it }
         }
     }
 
 
     private fun loadParcelData() {
-        val holderList = intent.getParcelableExtra<HolderCatQuestAndAns>(Const.HolderCatQuestAndAns)
+//        val holderList = intent.getParcelableExtra<HolderCatQuestAndAns>(Const.HolderCatQuestAndAns)
+        val holderList = intent.getParcelableExtra<HolderCatQuestAndAnsFirst>(Const.HolderCatQuestAndAnsFirst)
         val continueQues = intent.getBooleanExtra(Const.CONTINUE_QUESTION, false)
-        val continueQuesNo = intent.getIntExtra(Const.CONTINUE_QUESTION_NO, 0)
+        val continueQuesNo = intent.getIntExtra(Const.CONTINUE_QUESTION_NO, 1)
 
         if (holderList != null) {
+
             currentQuestionPosition = continueQuesNo
-            holderCatQuesAndAns = holderList
+//            holderCatQuesAndAns = holderList
+            holderCatQuestAndAnsFirst = holderList
             continueQuestion = continueQues
-            totalQuestions = holderCatQuesAndAns.listHolderQuestAndAns.size
+//            totalQuestions = holderCatQuesAndAns.listHolderQuestAndAns.size
+            totalQuestions = holderList.tblCategory.totalQuestions
         } else {
             toastLong("Error Loading Data")
             Log.d(TAG, "loadData: list: $holderList")
@@ -203,10 +211,22 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     }
 
     private fun setMainData() {
-        b.tvCategoryTakeQues.text = holderCatQuesAndAns.tblCategory.title
+//        b.tvCategoryTakeQues.text = holderCatQuesAndAns.tblCategory.title
+        b.tvCategoryTakeQues.text = holderCatQuestAndAnsFirst.tblCategory.title
     }
 
-    private fun loadAndSetNextQuestion(questionPos: Int) {
+    private fun loadAndSetNextQuestion(isFirst: Boolean = false, questionPos: Int) {
+        if (isFirst){
+            val cat = holderCatQuestAndAnsFirst.tblCategory
+            val quest = holderCatQuestAndAnsFirst.tblQuestion
+            b.tvQuestionNumberTakeQues.text = "${quest.questionNo} of ${cat.totalQuestions}"
+            b.tvQuestionTakeQues.text = quest.question
+            b.sbDifficultyLevelTakeQues.progress = quest.difficulty - 1
+
+            adapterAnswer.updateList(holderCatQuestAndAnsFirst.listAnswers)
+            return
+        }
+
         Log.d(TAG, "loadAndSetNextQuestion: Position: $questionPos")
         if (questionPos == holderCatQuesAndAns.listHolderQuestAndAns.size) {
             if (holderCatQuesAndAns.listHolderQuestAndAns.isEmpty()) {

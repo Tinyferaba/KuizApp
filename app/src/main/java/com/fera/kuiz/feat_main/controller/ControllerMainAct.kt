@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
 import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
+import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAnsFirst
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_CategoryQuestions.model.InterfaceCategory
@@ -101,10 +102,3 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
     }
 
 }
-
-@Parcelize
-data class HolderCatQuestAndAnsFirst(
-    val tblCategory: TblCategory,
-    val tblQuestion: TblQuestion,
-    val listAnswers: ArrayList<TblAnswer>
-) : Parcelable
