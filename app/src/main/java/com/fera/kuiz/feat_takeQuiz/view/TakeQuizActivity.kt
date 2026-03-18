@@ -1,9 +1,11 @@
 package com.fera.kuiz.feat_takeQuiz.view
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -36,7 +38,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private var totalQuestions = 0
 
     // *********** CATEGORY PROPERTIES *************
-    private var tblUserAnswerSelected: TblUserAnswer?=null
+    private var tblUserAnswerSelected: TblUserAnswer? = null
     private var totalCorrectAnswers = 0
     private var totalWrongAnswers = 0
     private var totalQAnswered = 0
@@ -105,8 +107,9 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
                 controllerTakeQuiz.deleteQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.pkQuestionId)
             }
         }
+
         b.ivNextTakeQues.setOnClickListener {
-            if (tblUserAnswerSelected != null){
+            if (tblUserAnswerSelected != null) {
                 tblUserAnswerSelected?.let {
                     saveUserAnswer(it)   //Note: Save User Answer before loading the next Question
                 }
@@ -121,7 +124,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         }
 
         b.ivRevealAnswerTakeQues.setOnClickListener {
-            if (b.ivRevealAnswerTakeQues.tag == ContextCompat.getString(this, R.string.tagClosed)){
+            if (b.ivRevealAnswerTakeQues.tag == ContextCompat.getString(this, R.string.tagClosed)) {
                 b.ivRevealAnswerTakeQues.setImageResource(R.drawable.ic_eye_open)
                 b.ivRevealAnswerTakeQues.tag = ContextCompat.getString(this, R.string.tagOpened)
                 adapterAnswer.toggleAnswer(true)
@@ -145,6 +148,32 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         adapterAnswer = AdapterAnswerTakeQuizAct(emptyList(), this, this)
         b.rvChoiceTakeQues.layoutManager = LinearLayoutManager(this)
         b.rvChoiceTakeQues.adapter = adapterAnswer
+
+        b.sbDifficultyLevelTakeQues.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val difficulty = progress + 1 // Converts 0-9 to 1-10. SeekBar takes 0 as 1
+
+                b.tvDifficultyDescTakeQues.text = "Difficulty: $difficulty"
+                when (difficulty) {
+                    in 1..3 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+                    }
+                    in 4..7 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+                    }
+                    in 8..10 -> {
+                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+                    }
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         //Note: Called only once to load the first question
         loadAndSetNextQuestion(currentQuestionPosition)
@@ -180,7 +209,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
     private fun loadAndSetNextQuestion(questionPos: Int) {
         Log.d(TAG, "loadAndSetNextQuestion: Position: $questionPos")
         if (questionPos == holderCatQuesAndAns.listHolderQuestAndAns.size) {
-            if (holderCatQuesAndAns.listHolderQuestAndAns.isEmpty()){
+            if (holderCatQuesAndAns.listHolderQuestAndAns.isEmpty()) {
                 toastLong("No Questions")
             } else {
                 toastShort("Hurray! Quiz Completed!")
@@ -194,6 +223,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
             val holderQuestAndAns = holderCatQuesAndAns.listHolderQuestAndAns[questionPos]
             b.tvQuestionNumberTakeQues.text = "${holderQuestAndAns.tblQuestion.questionNo} of ${holderCatQuesAndAns.listHolderQuestAndAns.size}"
             b.tvQuestionTakeQues.text = holderQuestAndAns.tblQuestion.question
+            b.sbDifficultyLevelTakeQues.progress = holderQuestAndAns.tblQuestion.difficulty - 1
 
             adapterAnswer.updateList(holderQuestAndAns.listAnswers)
         }
@@ -252,6 +282,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         controllerTakeQuiz.saveUserAnswer(tblUserAnswer)
 
         holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.isTaken = true       // Question is taken so it must be updated
+        holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.difficulty = b.sbDifficultyLevelTakeQues.progress + 1
         controllerTakeQuiz.updateQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion)
     }
 

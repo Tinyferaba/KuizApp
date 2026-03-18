@@ -96,14 +96,14 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
             if (hasFocus){
                 v.setBackgroundResource(R.drawable.bg_ques_input_focused)
             } else {
-                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+                v.setBackgroundResource(R.drawable.bg_rect_r2)
             }
         }
         b.edtChoiceDescAddQues.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (hasFocus){
                 v.setBackgroundResource(R.drawable.bg_ques_input_focused)
             } else {
-                v.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+                v.setBackgroundResource(R.drawable.bg_rect_r2)
             }
         }
     }
@@ -147,6 +147,9 @@ class AddQuestionActivity : AppCompatActivity(), AdapterAddQuestAct.InterfaceAda
         b.ivAddChoiceAddQues.setOnClickListener {
             showAddChoicePanel()
             showKeyboard(this, b.edtChoiceAddQues)
+        }
+        b.clAddChoiceAddQues.setOnClickListener {
+
         }
         b.ivCloseAddChoiceAddQues.setOnClickListener {
             b.edtChoiceAddQues.setText("")

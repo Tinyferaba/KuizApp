@@ -31,4 +31,21 @@ interface DaoQuestion : InterfaceQuestion, InterfaceCatQuestion {
 
     @Query("select * from tblCategory where pkCategoryId = :pkCategoryId")
     override suspend fun getCategory(pkCategoryId: Long): TblCategory
+
+    @Query("""
+        select 
+            q.pkQuestionId,
+            q.fkQuestion_categoryId,
+            q.questionNo,
+            q.questionType,
+            q.question,
+            q.difficulty,
+            q.isTaken,
+            q.dateAdded,
+            q.dataStatus
+        from tblQuestion q 
+            left join tblCategory c on q.fkQuestion_categoryId = c.pkCategoryId
+        where pkCategoryId = :pkCategoryId and questionNo = :questionNo
+    """)
+    override suspend fun getQuestionByCatIdByNo(pkCategoryId: Long, questionNo: Int): TblQuestion
 }

@@ -166,4 +166,22 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecent
             }
         }
     }
+
+    fun gotoTakeQuizActivityFirst(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAnsFirst(pkCategoryId, questionNo)
+
+            Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
+
+            withContext(Dispatchers.Main){
+                val intent = Intent(this@MainActivity, TakeQuizActivity::class.java)
+                intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
+                intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
+                intent.putExtra(Const.CONTINUE_QUESTION_NO, questionNo)
+                intent.putExtra(Const.HolderCatQuestAndAns, holderCatQuestAndAns)
+                startActivity(intent)
+            }
+        }
+    }
 }

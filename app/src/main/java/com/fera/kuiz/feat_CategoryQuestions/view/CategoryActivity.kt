@@ -1,6 +1,8 @@
 package com.fera.kuiz.feat_CategoryQuestions.view
 
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -67,6 +69,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
 
     }
 
+
     private fun addActionListeners() {
         b.ivBackCat.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -77,6 +80,44 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
         b.ivTakeQuizCat.setOnClickListener {
             tblCategory?.pkCategoryId?.let {
                 gotoTakeQuizActivity(it, false, 0)
+            }
+        }
+        b.ivResetQuestionsTakeQues.setOnClickListener {
+            b.ivResetQuestionsTakeQues.animate()
+                .setDuration(500)
+                .rotation(-360F)
+                .scaleX(1.3F)
+                .scaleY(1.3F)
+                .withStartAction {
+                    b.ivResetQuestionsTakeQues.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green_light))
+                }
+                .withEndAction {
+                    b.ivResetQuestionsTakeQues.animate()
+                        .setDuration(500)
+                        .scaleX(1F)
+                        .scaleY(1F)
+                        .withEndAction {
+                            b.ivResetQuestionsTakeQues.rotation = 0F
+                            b.ivResetQuestionsTakeQues.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green_darkest))
+                        }.start()
+                }.start()
+
+            tblCategory?.let {
+                lifecycleScope.launch {
+                    controllerCategory.deleteUserAnswersInCategory(it.pkCategoryId)
+                    controllerCategory.resetQuestionsTakenStatus(it.pkCategoryId)
+
+                    it.totalCorrectAnswers = 0
+                    it.totalWrongAnswers = 0
+                    it.totalQAnswered = 0
+                    it.lastQuestionTakenId = 0L
+                    it.lastQuestionTakenNo = 0
+                    controllerCategory.updateCategory(it)
+
+                    withContext(Dispatchers.Main){
+                        loadStats()
+                    }
+                }
             }
         }
         b.ivAddQuestionCat.setOnClickListener {
@@ -104,16 +145,51 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
         tblCategory?.let {
             b.edtTitleCat.setText(it.title)
             b.tvCatDescriptionCat.text = it.description
-            b.pbCorrectCat.max = it.totalQAnswered
-            b.pbCorrectCat.progress = it.totalCorrectAnswers
-            b.pbProgressCat.max = it.totalQuestions
-            b.pbProgressCat.progress = it.totalQAnswered
             it.iconFilePath?.let {
                 Glide.with(this)
                     .load(it)
                     .into(b.sivCategoryIconCat)
             }
         }
+    }
+
+    override fun onResume() {
+        loadStats()
+
+        super.onResume()
+    }
+
+    private fun loadStats() {
+        tblCategory?.let {
+            val maxCorrect = it.totalQAnswered
+            b.pbCorrectCat.max = maxCorrect
+            val animatorCorrect = ValueAnimator.ofInt(0, it.totalCorrectAnswers)
+            animatorCorrect.duration = 1000
+            animatorCorrect.addUpdateListener {
+                val value = it.getAnimatedValue() as Int
+                val percentage = 100 * (value / maxCorrect.toDouble())
+                b.pbCorrectCat.progress = value
+                b.tvCorrectPercent.text = "${percentage.toInt()} %"
+            }
+            animatorCorrect.start()
+
+            val maxProgress = it.totalQuestions
+            b.pbProgressCat.max = maxProgress
+            val animatorProgress = ValueAnimator.ofInt(0, it.totalQAnswered)
+            animatorProgress.duration = 1000
+            animatorProgress.addUpdateListener {
+                val value = it.getAnimatedValue() as Int
+                val percentage = 100 * (value / maxProgress.toDouble())
+                b.pbProgressCat.progress = value
+                b.tvProgressPercent.text = "${percentage.toInt()} %"
+            }
+            animatorProgress.start()
+
+
+
+
+        }
+
     }
 
     private fun loadParcelData(){

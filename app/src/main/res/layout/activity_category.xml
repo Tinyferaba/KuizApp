@@ -18,6 +18,50 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
+    <EditText
+        android:id="@+id/edtTitleCat"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/transparent"
+        android:editable="false"
+        android:fontFamily="monospace"
+        android:hint="@string/txtCategory"
+        android:inputType="none"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorHint="@color/greenish_grey"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBackCat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivBackCat"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+
+    <TextView
+        android:id="@+id/tvCatDescriptionCat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:hint="@string/txtDescription"
+        android:textColor="@color/greenish_grey"
+        android:textColorHint="@color/greenish_grey"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/sivCategoryIconCat"
+        app:layout_constraintEnd_toEndOf="@+id/edtTitleCat"
+        app:layout_constraintStart_toEndOf="@+id/ivBackCat"
+        app:layout_constraintTop_toBottomOf="@+id/edtTitleCat" />
+
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/sivCategoryIconCat"
         android:layout_width="100dp"
@@ -55,11 +99,11 @@
 
     <ImageView
         android:id="@+id/ivBackCat"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="12dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -95,9 +139,7 @@
         android:layout_width="0dp"
         android:layout_height="12dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:max="100"
-        android:progress="40"
+        android:layout_marginEnd="50dp"
         android:progressDrawable="@drawable/bg_pb_round"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,17 +147,27 @@
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
+    <TextView
+        android:id="@+id/tvCorrectPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="cursive"
+        android:text="0 %"
+        android:textColor="@color/greenish_grey"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pbCorrectCat"
+        app:layout_constraintStart_toEndOf="@+id/pbCorrectCat"
+        app:layout_constraintTop_toTopOf="@+id/pbCorrectCat" />
+
     <ProgressBar
         android:id="@+id/pbProgressCat"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="12dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:max="100"
-        android:progress="30"
+        android:layout_marginEnd="50dp"
         android:progressDrawable="@drawable/bg_pb_round"
-        android:secondaryProgress="60"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -123,45 +175,18 @@
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
 
-    <EditText
-        android:id="@+id/edtTitleCat"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@color/transparent"
-        android:fontFamily="monospace"
-        android:hint="@string/txtCategory"
-        android:inputType="none"
-        android:editable="false"
-        android:maxLines="1"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/greenish_grey"
-        android:textSize="23sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/ivBackCat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivBackCat"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
-        android:id="@+id/tvCatDescriptionCat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textSize="15sp"
-        android:hint="@string/txtDescription"
+        android:id="@+id/tvProgressPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="cursive"
+        android:text="0 %"
         android:textColor="@color/greenish_grey"
-        android:textColorHint="@color/greenish_grey"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/sivCategoryIconCat"
-        app:layout_constraintEnd_toEndOf="@+id/edtTitleCat"
-        app:layout_constraintStart_toEndOf="@+id/ivBackCat"
-        app:layout_constraintTop_toBottomOf="@+id/edtTitleCat" />
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pbProgressCat"
+        app:layout_constraintStart_toEndOf="@+id/pbProgressCat"
+        app:layout_constraintTop_toTopOf="@+id/pbProgressCat" />
 
     <!--    <ImageView-->
     <!--        android:id="@+id/ivSaveCat"-->
@@ -211,10 +236,36 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
         app:tint="@color/green_darkest" />
 
-    <ImageView
-        android:id="@+id/ivAddQuestionCat"
+
+    <TextView
+        android:id="@+id/textdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/txtResetProgress"
+        android:textColor="@color/green_darker"
+        android:textSize="13sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/ivResetQuestionsTakeQues"
+        app:layout_constraintEnd_toStartOf="@+id/ivResetQuestionsTakeQues"
+        app:layout_constraintTop_toTopOf="@+id/ivResetQuestionsTakeQues" />
+
+    <ImageView
+        android:id="@+id/ivResetQuestionsTakeQues"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_reset"
+        app:layout_constraintBottom_toTopOf="@+id/rvQuestionsCat"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:tint="@color/green_darkest" />
+
+
+    <ImageView
+        android:id="@+id/ivAddQuestionCat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="60dp"
         android:src="@drawable/ic_add_fill"

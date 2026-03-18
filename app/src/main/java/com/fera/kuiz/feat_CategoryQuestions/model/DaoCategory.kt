@@ -84,4 +84,25 @@ interface DaoCategory : InterfaceCategory {
     """)
     override suspend fun getLastQTakenQuestionNo(pkCategoryId: Long): Int
 
+    @Query("""
+        update tblQuestion
+        set isTaken = 0
+        where pkQuestionId in (
+            select q.pkQuestionId from tblQuestion q 
+                left join tblCategory c on q.fkQuestion_categoryId = c.pkCategoryId
+            where c.pkCategoryId = :pkCategoryId and q.isTaken = 1
+        )
+    """)
+    override suspend fun resetQuestionsTakenStatus(pkCategoryId: Long)
+
+    @Query("""
+        delete from tblUserAnswer where fkUserAnswer_questionId in (
+            select q.pkQuestionId from tblUserAnswer ua
+                left join tblQuestion q on ua.fkUserAnswer_questionId = q.pkQuestionId
+                left join tblCategory c on q.fkQuestion_categoryId = c.pkCategoryId
+            where c.pkCategoryId = :pkCategoryId
+        )
+    """)
+    override suspend fun deleteUserAnswersInCategory(pkCategoryId: Long)
+
 }

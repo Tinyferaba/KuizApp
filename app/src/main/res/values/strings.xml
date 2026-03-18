@@ -25,4 +25,5 @@
     <string name="txtCancel">Cancel</string>
     <string name="txtSave">Save</string>
     <string name="txtEdit">Edit</string>
+    <string name="txtResetProgress">Reset Progress</string>
 </resources>

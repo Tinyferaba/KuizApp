@@ -10,4 +10,6 @@ interface InterfaceQuestion {
     suspend fun getQuestion(pkQuestionId: Long): TblQuestion
 
     suspend fun getQuestions(pkCategoryId: Long): List<TblQuestion>
+
+    suspend fun getQuestionByCatIdByNo(pkCategoryId: Long, questionNo: Int): TblQuestion
 }

@@ -28,4 +28,9 @@ interface InterfaceCategory {
     suspend fun getLastQTakenQuestionId(pkCategoryId: Long): Long
 
     suspend fun getLastQTakenQuestionNo(pkCategoryId: Long): Int
+
+    suspend fun resetQuestionsTakenStatus(pkCategoryId: Long)
+
+    suspend fun deleteUserAnswersInCategory(pkCategoryId: Long)
+
 }

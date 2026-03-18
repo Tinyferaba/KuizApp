@@ -1,14 +1,17 @@
 package com.fera.kuiz.feat_main.controller
 
 import android.app.Application
+import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fera.kuiz.common.model.database.KuizDb
+import com.fera.kuiz.feat_AddQuestion.model.answer.TblAnswer
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderCatQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.HolderQuestAndAns
 import com.fera.kuiz.feat_AddQuestion.model.question.TblQuestion
 import com.fera.kuiz.feat_CategoryQuestions.model.InterfaceCategory
 import com.fera.kuiz.feat_CategoryQuestions.model.TblCategory
+import kotlinx.parcelize.Parcelize
 
 class ControllerMainAct(application: Application) : AndroidViewModel(application), InterfaceCategory {
 
@@ -67,6 +70,14 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
         return daoCategory.getLastQTakenQuestionNo(pkCategoryId)
     }
 
+    override suspend fun resetQuestionsTakenStatus(pkCategoryId: Long) {
+        daoCategory.resetQuestionsTakenStatus(pkCategoryId)
+    }
+
+    override suspend fun deleteUserAnswersInCategory(pkCategoryId: Long) {
+        daoCategory.deleteUserAnswersInCategory(pkCategoryId)
+    }
+
     suspend fun getHolderCatQuestAndAns(pkCategoryId: Long): HolderCatQuestAndAns {
         val listHolderQuestAndAns = arrayListOf<HolderQuestAndAns>()
 
@@ -81,4 +92,19 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
         return HolderCatQuestAndAns(tblCategory, listHolderQuestAndAns)
     }
 
+    suspend fun getHolderCatQuestAndAnsFirst(pkCategoryId: Long, questionNo: Int): HolderCatQuestAndAnsFirst {
+        val tblCategory = daoCategory.getCategory(pkCategoryId)
+        val tblQuestion = daoQuestion.getQuestionByCatIdByNo(pkCategoryId, questionNo)
+        val listAnswers = daoAnswer.getAnswers(tblQuestion.pkQuestionId)
+
+        return HolderCatQuestAndAnsFirst(tblCategory, tblQuestion, ArrayList(listAnswers))
+    }
+
 }
+
+@Parcelize
+data class HolderCatQuestAndAnsFirst(
+    val tblCategory: TblCategory,
+    val tblQuestion: TblQuestion,
+    val listAnswers: ArrayList<TblAnswer>
+) : Parcelable
