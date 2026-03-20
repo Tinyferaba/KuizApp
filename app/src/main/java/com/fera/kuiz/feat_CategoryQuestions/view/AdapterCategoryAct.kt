@@ -23,6 +23,8 @@ class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private va
         return MyViewHolder(v)
     }
 
+    private val animatedPositions = mutableSetOf<Int>()
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.b.apply {
             val tblQuestion = listQuestion[position]
@@ -54,8 +56,22 @@ class AdapterCategoryAct(private var listQuestion: List<TblQuestion>, private va
             }
 
             root.setOnClickListener {
-                actions.gotoTakeQuizActivity(tblQuestion.fkQuestion_categoryId, true, tblQuestion.questionNo-1)
+                actions.gotoTakeQuizActivity(tblQuestion.fkQuestion_categoryId, true, tblQuestion.questionNo)
             }
+        }
+
+
+        if (!animatedPositions.contains(position)){
+            holder.itemView.translationY = 30F;
+            holder.itemView.setAlpha(0f);
+
+            holder.itemView.animate()
+                .translationY(0F)
+                .alpha(1f)
+                .setDuration(200)
+                .start();
+
+            animatedPositions.add(position)
         }
     }
 

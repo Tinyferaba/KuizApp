@@ -15,6 +15,8 @@ interface InterfaceCategory {
 
     suspend fun getCategory(pkCategoryId: Long): TblCategory
 
+    fun getCategoryLive(pkCategoryId: Long): LiveData<TblCategory>
+
     suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion>
 
     suspend fun getCategoryIds(): List<Long>

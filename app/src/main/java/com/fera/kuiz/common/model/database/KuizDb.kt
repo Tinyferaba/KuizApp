@@ -53,7 +53,7 @@ abstract class KuizDb: RoomDatabase() {
                     context.applicationContext,
                     KuizDb::class.java,
                     "kuiz_db.db")
-//                    .openHelperFactory(factory)
+                    .openHelperFactory(factory)
                     .createFromAsset("database/kuiz_db.db")
                     .build()
 

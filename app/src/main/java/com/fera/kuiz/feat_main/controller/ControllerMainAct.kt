@@ -43,6 +43,10 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
         return daoCategory.getCategory(pkCategoryId)
     }
 
+    override fun getCategoryLive(pkCategoryId: Long): LiveData<TblCategory> {
+        return daoCategory.getCategoryLive(pkCategoryId)
+    }
+
     override suspend fun getQuestionList(pkCategoryId: Long): List<TblQuestion> {
         return daoCategory.getQuestionList(pkCategoryId)
     }
@@ -95,7 +99,7 @@ class ControllerMainAct(application: Application) : AndroidViewModel(application
 
     suspend fun getHolderCatQuestAndAnsFirst(pkCategoryId: Long, questionNo: Int): HolderCatQuestAndAnsFirst {
         val tblCategory = daoCategory.getCategory(pkCategoryId)
-        val tblQuestion = daoQuestion.getQuestionByCatIdByNo(pkCategoryId, questionNo)
+        val tblQuestion = if (questionNo == 0) daoQuestion.getQuestionByCatIdByNo(pkCategoryId, 1) else daoQuestion.getQuestionByCatIdByNo(pkCategoryId, questionNo)
         val listAnswers = daoAnswer.getAnswers(tblQuestion.pkQuestionId)
 
         return HolderCatQuestAndAnsFirst(tblCategory, tblQuestion, ArrayList(listAnswers))

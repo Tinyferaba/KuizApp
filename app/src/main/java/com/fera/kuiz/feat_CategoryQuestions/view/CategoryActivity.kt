@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.fera.kuiz.BuildConfig
 import com.fera.kuiz.R
 import com.fera.kuiz.common.util.Const
+import com.fera.kuiz.common.util.categoryIcons
 import com.fera.kuiz.common.util.toastLong
 import com.fera.kuiz.databinding.ActivityCategoryBinding
 import com.fera.kuiz.feat_CategoryQuestions.controller.ControllerCategoryAct
@@ -36,7 +37,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
     private val TAG = "CategoryActivity"
 
     private lateinit var b: ActivityCategoryBinding
-    private var tblCategory: TblCategory ?= null
+    private var tblCategory: TblCategory? = null
 
     private lateinit var adapterCategoryAct: AdapterCategoryAct
     private var listQuestion = emptyList<TblQuestion>()
@@ -114,10 +115,6 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
                     it.lastQuestionTakenId = 0L
                     it.lastQuestionTakenNo = 0
                     controllerCategory.updateCategory(it)
-
-                    withContext(Dispatchers.Main){
-                        loadStats()
-                    }
                 }
             }
         }
@@ -136,68 +133,64 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
         b.rvQuestionsCat.layoutManager = LinearLayoutManager(this)
         b.rvQuestionsCat.adapter = adapterCategoryAct
 
-        tblCategory?.pkCategoryId?.let {
-            controllerCategory.getQuestionsLive(it).observe(this){list ->
+
+
+        val category = tblCategory ?: return
+        val catId = category.pkCategoryId
+        b.edtTitleCat.setText(category.title)
+        b.tvCatDescriptionCat.text = category.description
+        b.sivCategoryIconCat.setImageResource(categoryIcons[category.title] ?: R.drawable.ic_logo_circular)
+
+        controllerCategory.getCategoryLive(catId).observe(this) { cat ->
+            tblCategory = cat
+
+//            cat.iconFilePath?.let { path ->
+//                Glide.with(this)
+//                    .load(path)
+//                    .into(b.sivCategoryIconCat)
+//            }
+            controllerCategory.getQuestionsLive(catId).observe(this) { list ->
                 adapterCategoryAct.updateList(list)
                 listQuestion = list
             }
-        }
-
-        tblCategory?.let {
-            b.edtTitleCat.setText(it.title)
-            b.tvCatDescriptionCat.text = it.description
-            it.iconFilePath?.let {
-                Glide.with(this)
-                    .load(it)
-                    .into(b.sivCategoryIconCat)
-            }
+            loadStats(correctMax = cat.totalQAnswered, correctTotal = cat.totalCorrectAnswers, progressMax = cat.totalQuestions, progressTotal = cat.totalQAnswered)
         }
     }
 
-    override fun onResume() {
-        loadStats()
+    private fun loadStats(correctStart: Int=0, correctMax: Int, correctTotal: Int, progressStart: Int=0, progressMax: Int, progressTotal: Int, ) {
+        try {
+                b.pbCorrectCat.max = correctMax
+                val animatorCorrect = ValueAnimator.ofInt(correctStart, correctTotal)
+                animatorCorrect.duration = 1000
+                animatorCorrect.addUpdateListener {
+                    val value = it.getAnimatedValue() as Int
+                    val percentage = 100 * (value / correctMax.toDouble())
+                    b.pbCorrectCat.progress = value
+                    b.tvCorrectPercent.text = "${percentage.toInt()} %"
+                }
+                animatorCorrect.start()
 
-        super.onResume()
-    }
+                b.pbProgressCat.max = progressMax
+                val animatorProgress = ValueAnimator.ofInt(progressStart, progressTotal)
+                animatorProgress.duration = 1000
+                animatorProgress.addUpdateListener {
+                    val value = it.getAnimatedValue() as Int
+                    val percentage = 100 * (value / progressMax.toDouble())
+                    b.pbProgressCat.progress = value
+                    b.tvProgressPercent.text = "${percentage.roundToInt()} %"
+                }
+                animatorProgress.start()
 
-    private fun loadStats() {
-        tblCategory?.let {
-            val maxCorrect = it.totalQAnswered
-            b.pbCorrectCat.max = maxCorrect
-            val animatorCorrect = ValueAnimator.ofInt(0, it.totalCorrectAnswers)
-            animatorCorrect.duration = 1000
-            animatorCorrect.addUpdateListener {
-                val value = it.getAnimatedValue() as Int
-                val percentage = 100 * (value / maxCorrect.toDouble())
-                b.pbCorrectCat.progress = value
-                b.tvCorrectPercent.text = "${percentage.toInt()} %"
-            }
-            animatorCorrect.start()
-
-            val maxProgress = it.totalQuestions
-            b.pbProgressCat.max = maxProgress
-            val animatorProgress = ValueAnimator.ofInt(0, it.totalQAnswered)
-            animatorProgress.duration = 1000
-            animatorProgress.addUpdateListener {
-                val value = it.getAnimatedValue() as Int
-                val percentage = 100 * (value / maxProgress.toDouble())
-                b.pbProgressCat.progress = value
-                b.tvProgressPercent.text = "${percentage.roundToInt()} %"
-            }
-            animatorProgress.start()
-
-
-
-
+        } catch (e: Exception) {
+            Log.d(TAG, "loadStats: Error: $e")
         }
-
     }
 
-    private fun loadParcelData(){
+    private fun loadParcelData() {
         val category = intent.getParcelableExtra<TblCategory>(Const.CATEGORY)
 //        val questionsList = intent.getParcelableArrayListExtra<TblQuestion>(Const.QUESTION_LIST)
 
-        if (category == null ){
+        if (category == null) {
             //   || questionsList == null
             toastLong("Error Loading Data")
 //            Log.d(TAG, "loadAllData: \tCategory: $category\tQuestionList: $questionsList")
@@ -253,7 +246,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
 
             Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 val intent = Intent(this@CategoryActivity, TakeQuizActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 intent.putExtra(Const.CONTINUE_QUESTION, continueQuestion)
@@ -268,7 +261,7 @@ class CategoryActivity : AppCompatActivity(), AdapterCategoryAct.InterfaceAdapte
         lifecycleScope.launch {
             val listAnswers = controllerCategory.getAnswers(tblQuestion.pkQuestionId)
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 val intent = Intent(this@CategoryActivity, AddQuestionActivity::class.java)
                 intent.putExtra(Const.ACTIVITY_KEY, BuildConfig.ACTIVITY_PASSWORD)
                 intent.putExtra(Const.QUESTION, tblQuestion)

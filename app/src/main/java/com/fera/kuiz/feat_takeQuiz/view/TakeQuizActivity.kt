@@ -109,31 +109,31 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
                 controllerTakeQuiz.deleteQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.pkQuestionId)
             }
         }
-        b.sbDifficultyLevelTakeQues.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val difficulty = progress + 1 // Converts 0-9 to 1-10. SeekBar takes 0 as 1
-
-                b.tvDifficultyDescTakeQues.text = "Difficulty: $difficulty"
-                when (difficulty) {
-                    in 0..3 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
-                    }
-                    in 4..7 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
-                    }
-                    in 8..10 -> {
-                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
-                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
-                    }
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+//        b.sbDifficultyLevelTakeQues.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+//            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+//                val difficulty = progress + 1 // Converts 0-9 to 1-10. SeekBar takes 0 as 1
+//
+//                b.tvDifficultyDescTakeQues.text = "Difficulty: $difficulty"
+//                when (difficulty) {
+//                    in 0..3 -> {
+//                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+//                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.green))
+//                    }
+//                    in 4..7 -> {
+//                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+//                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.orange))
+//                    }
+//                    in 8..10 -> {
+//                        b.sbDifficultyLevelTakeQues.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+//                        b.sbDifficultyLevelTakeQues.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this@TakeQuizActivity, R.color.red))
+//                    }
+//                }
+//            }
+//
+//            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+//
+//            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+//        })
         b.ivNextTakeQues.setOnClickListener {
             if (tblUserAnswerSelected != null) {
                 tblUserAnswerSelected?.let {
@@ -221,7 +221,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
             val quest = holderCatQuestAndAnsFirst.tblQuestion
             b.tvQuestionNumberTakeQues.text = "${quest.questionNo} of ${cat.totalQuestions}"
             b.tvQuestionTakeQues.text = quest.question
-            b.sbDifficultyLevelTakeQues.progress = quest.difficulty - 1
+//            b.sbDifficultyLevelTakeQues.progress = quest.difficulty - 1
 
             adapterAnswer.updateList(holderCatQuestAndAnsFirst.listAnswers)
             return
@@ -243,7 +243,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
             val holderQuestAndAns = holderCatQuesAndAns.listHolderQuestAndAns[questionPos]
             b.tvQuestionNumberTakeQues.text = "${holderQuestAndAns.tblQuestion.questionNo} of ${holderCatQuesAndAns.listHolderQuestAndAns.size}"
             b.tvQuestionTakeQues.text = holderQuestAndAns.tblQuestion.question
-            b.sbDifficultyLevelTakeQues.progress = holderQuestAndAns.tblQuestion.difficulty - 1
+//            b.sbDifficultyLevelTakeQues.progress = holderQuestAndAns.tblQuestion.difficulty - 1
 
             adapterAnswer.updateList(holderQuestAndAns.listAnswers)
         }
@@ -287,7 +287,6 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
 
 
     override fun saveUserAnswer(tblUserAnswer: TblUserAnswer) {
-
         if (tblUserAnswer.isCorrect) {
             totalCorrectAnswers++
         } else {
@@ -302,7 +301,7 @@ class TakeQuizActivity : AppCompatActivity(), InterfaceTakeQuizAct, AdapterAnswe
         controllerTakeQuiz.saveUserAnswer(tblUserAnswer)
 
         holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.isTaken = true       // Question is taken so it must be updated
-        holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.difficulty = b.sbDifficultyLevelTakeQues.progress + 1
+//        holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion.difficulty = b.sbDifficultyLevelTakeQues.progress + 1
         controllerTakeQuiz.updateQuestion(holderCatQuesAndAns.listHolderQuestAndAns[currentQuestionPosition].tblQuestion)
     }
 

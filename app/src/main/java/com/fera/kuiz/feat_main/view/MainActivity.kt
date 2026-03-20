@@ -171,6 +171,7 @@ class MainActivity : AppCompatActivity(), InterfaceMainAct, AdapterMainActRecent
     override fun gotoTakeQuizActivity(pkCategoryId: Long, continueQuestion: Boolean, questionNo: Int) {
         CoroutineScope(Dispatchers.IO).launch {
 
+
             val holderCatQuestAndAns = controllerMain.getHolderCatQuestAndAnsFirst(pkCategoryId, questionNo)
 
             Log.d(TAG, "gotoTakeQuizActivity: $holderCatQuestAndAns")

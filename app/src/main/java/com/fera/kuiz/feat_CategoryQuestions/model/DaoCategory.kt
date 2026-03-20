@@ -26,6 +26,9 @@ interface DaoCategory : InterfaceCategory {
     @Query("select * from tblcategory where pkCategoryId = :pkCategoryId")
     override suspend fun getCategory(pkCategoryId: Long): TblCategory
 
+    @Query("select * from tblcategory where pkCategoryId = :pkCategoryId")
+    override fun getCategoryLive(pkCategoryId: Long): LiveData<TblCategory>
+
     @Query("select * from tblcategory")
      fun getCategories(): LiveData<List<TblCategory>>
 
